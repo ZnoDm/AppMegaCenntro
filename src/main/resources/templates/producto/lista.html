@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="fragments :: headerfiles">
+</head>
+<body>
+<header th:insert="fragments :: nav"></header>
+
+<div class="container">
+    <h1 sec:authorize="hasRole('ROLE_USER')">HOLAAA hasRole ROLE_ADMIN</h1>
+    <h1 sec:authorize="hasAuthority('PERMISO_CREAR')">HOLAAA hasAuthority('PERMISO_CREAR')</h1>
+</div>
+
+<footer th:insert="fragments :: footer"></footer>
+<div th:insert="fragments :: scripts"></div>
+</body>
+</html>
