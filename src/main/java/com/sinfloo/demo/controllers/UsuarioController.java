@@ -6,15 +6,18 @@ import com.sinfloo.demo.enums.RolNombre;
 import com.sinfloo.demo.services.RolService;
 import com.sinfloo.demo.services.UsuarioService;
 
-import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashSet;
@@ -36,9 +39,17 @@ public class UsuarioController {
     
     
     @GetMapping("/listar")
-    public String listarUsuarios(Model model) {
+    public String listarUsuarios(@RequestParam(defaultValue = "0") int pagina,Model model) {
+    	int tamanoPagina = 2;
         List<Usuario> usuarios = usuarioService.listarUsuarios();
-        model.addAttribute("usuarios", usuarios);
+        int totalUsuarios = usuarios.size();
+        int desde = pagina * tamanoPagina;
+        int hasta = Math.min(desde + tamanoPagina, totalUsuarios);
+        List<Usuario> usuariosPaginados = usuarios.subList(desde, hasta);
+        Page<Usuario> paginaUsuarios = new PageImpl<Usuario>(usuariosPaginados, PageRequest.of(pagina, tamanoPagina), totalUsuarios);
+        model.addAttribute("usuarios", paginaUsuarios);
+        model.addAttribute("paginaActual", pagina);
+        model.addAttribute("totalPaginas", (totalUsuarios + tamanoPagina - 1) / tamanoPagina);
 
         return "/admin/usuario/listar";
     }

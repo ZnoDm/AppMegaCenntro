@@ -65,11 +65,27 @@
 					 </li>
 					</div>
 				 
-				 
+					
 					<li class="dropdown">
-						 <a th:href="@{#homeSubmenu1}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+						<a th:href="@{#homeSubmenu1}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+						<i class="material-icons">person</i><span>Accesos</span></a>
+						<ul class="collapse list-unstyled menu" id="homeSubmenu1">
+							<li>
+								<a th:href="@{/rol/listar}">Roles</a>
+							</li>
+							<li>
+								<a th:href="@{/permiso/listar}">Permisos</a>
+							</li>
+							<li>
+								<a th:href="@{/usuario/listar}">Usuarios</a>
+							</li>
+						</ul>
+				   </li>
+
+					<li class="dropdown">
+						 <a th:href="@{#homeSubmenu2}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
 						 <i class="material-icons">aspect_ratio</i><span>Layouts</span></a>
-						 <ul class="collapse list-unstyled menu" id="homeSubmenu1">
+						 <ul class="collapse list-unstyled menu" id="homeSubmenu2">
 							 <li>
 								 <a th:href="@{/}">Home 1</a>
 							 </li>
@@ -215,7 +231,7 @@
 		<script th:src="@{/admin/static/js/jquery-3.3.1.min.js}"></script>
 	   
 	   
-	   <script type="text/javascript">
+	   	<script type="text/javascript">
 		$(document).ready(function () {
 					$('#sidebarCollapse').on('click', function () {
 						$('#sidebar').toggleClass('active');

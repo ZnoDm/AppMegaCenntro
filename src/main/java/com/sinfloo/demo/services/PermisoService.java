@@ -1,5 +1,6 @@
 package com.sinfloo.demo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -20,6 +21,10 @@ public class PermisoService {
 
 	public void save(Permiso permiso) {
 		permisoRepository.save(permiso);
+	}
+	
+	public List<Permiso> listarPermisos(){
+		return permisoRepository.findAll();
 	}
 	
 	public boolean existsById(int id) {

@@ -1,5 +1,6 @@
 package com.sinfloo.demo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -20,6 +21,10 @@ public class RolService {
 
 	public void save(Rol rol) {
 		rolRepository.save(rol);
+	}
+	
+	public List<Rol> listarRoles(){
+		return rolRepository.findAll();
 	}
 	
 	public boolean existsById(int id) {
