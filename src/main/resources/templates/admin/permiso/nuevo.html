@@ -1,235 +1,49 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
-       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  	<head>
-	    <!-- Required meta tags -->
-	    <title>ADMIN</title>
-	   	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	   	<link rel="icon" type="img/png" th:href="@{https://www.thymeleaf.org/images/thymeleaf.png}">
-		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" th:href="@{/admin/static/css/bootstrap.min.css}">
-		<!----css3---->
-		<link rel="stylesheet" th:href="@{/admin/static/css/custom.css}">
-		<!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-		<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
-		<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
-		<link th:href="@{https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap}" rel="stylesheet">
-
-		<!--google material icon-->
-		<link th:href="@{https://fonts.googleapis.com/css2?family=Material+Icons}" rel="stylesheet">
-	</head>
-	<body>
-	 	<div class="wrapper">
-	 		<div class="body-overlay"></div>
-			 <!-- Sidebar  -->
-			 <nav id="sidebar">
-				 <div class="sidebar-header">
-					 <h3><img th:src="@{/admin/static/img/logo.png}" class="img-fluid"/><span>Vishweb design</span></h3>
-				 </div>
-				 <ul class="list-unstyled components">
-				 	<li  class="active">
-						<a th:href="@{/}" class="dashboard"><i class="material-icons">dashboard</i><span>Dashboard</span></a>
-					 </li>
-			 
-				   	<div class="small-screen navbar-display">
-					 <li class="dropdown d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{#homeSubmenu0}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-						 <i class="material-icons">notifications</i><span> 4 notification</span></a>
-						 <ul class="collapse list-unstyled menu" id="homeSubmenu0">
-										 <li>
-										 <a th:href="@{/}">You have 5 new messages</a>
-										 </li>
-										 <li>
-											 <a th:href="@{/}">You're now friend with Mike</a>
-										 </li>
-										 <li>
-											 <a th:href="@{/}">Wish Mary on her birthday!</a>
-										 </li>
-										 <li>
-											 <a th:href="@{/}">5 warnings in Server Console</a>
-										 </li>
-						 </ul>
-					 </li>
-					 
-					 <li  class="d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{/}"><i class="material-icons">apps</i><span>apps</span></a>
-					 </li>
-					 
-					  <li  class="d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{/}"><i class="material-icons">person</i><span>user</span></a>
-					 </li>
-					 
-					 <li  class="d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{/}"><i class="material-icons">settings</i><span>setting</span></a>
-					 </li>
-					</div>
-				 
-				 
-					<li class="dropdown">
-						 <a th:href="@{#homeSubmenu1}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-						 <i class="material-icons">aspect_ratio</i><span>Layouts</span></a>
-						 <ul class="collapse list-unstyled menu" id="homeSubmenu1">
-							 <li>
-								 <a th:href="@{/}">Home 1</a>
-							 </li>
-							 <li>
-								 <a th:href="@{/}">Home 2</a>
-							 </li>
-							 <li>
-								 <a th:href="@{/}">Home 3</a>
-							 </li>
-						 </ul>
-					</li>
-					 
-					
-					
-				</ul>
-			 </nav>
-			 
-			 
-	 
-			<!-- Page Content  -->
-			<div id="content">
-			
-				<div class="top-navbar">
-					<nav class="navbar navbar-expand-lg">
-						<div class="container-fluid">
-		
-							<button type="button" id="sidebarCollapse" class="d-xl-block d-lg-block d-md-mone d-none">
-								<span class="material-icons">arrow_back_ios</span>
-							</button>
-							
-							<a class="navbar-brand" th:href="@{/}"> Dashboard </a>
-							
-							<button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
-							data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-								<span class="material-icons">more_vert</span>
-							</button>
-		
-							<div class="collapse navbar-collapse d-lg-block d-xl-block d-sm-none d-md-none d-none" id="navbarSupportedContent">
-								<ul class="nav navbar-nav ml-auto">   
-									<li class="dropdown nav-item active">
-										<a th:href="@{/}" class="nav-link" data-toggle="dropdown">
-										<span class="material-icons">notifications</span>
-										<span class="notification">4</span>
-									</a>
-										<ul class="dropdown-menu">
-											<li>
-												<a th:href="@{/}">You have 5 new messages</a>
-											</li>
-											<li>
-												<a th:href="@{/}">You're now friend with Mike</a>
-											</li>
-											<li>
-												<a th:href="@{/}">Wish Mary on her birthday!</a>
-											</li>
-											<li>
-												<a th:href="@{/}">5 warnings in Server Console</a>
-											</li>
-										
-										</ul>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" th:href="@{/}">
-										<span class="material-icons">apps</span>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" th:href="@{/}">
-										<span class="material-icons">person</span>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" th:href="@{/}">
-										<span class="material-icons">settings</span>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</nav>
-				</div>
-					
-					
-				<div class="main-content">
-					<div class="row">
-						<div class="col-12">
-							<!-- CONTENIDO -->
-							<H1>Acá estarán los reportes y graficos generales</H1>
-
-						</div>
-					</div>
-							
-					<footer class="footer">
-						<div class="container-fluid">
-						<div class="row">
-						<div class="col-md-6">
-							<nav class="d-flex">
-								<ul class="m-0 p-0">
-									<li>
-										<a th:href="@{/}">
-											Home
-										</a>
-									</li>
-									<li>
-										<a th:href="@{/}">
-											Company
-										</a>
-									</li>
-									<li>
-										<a th:href="@{/}">
-											Portfolio
-										</a>
-									</li>
-									<li>
-										<a th:href="@{/}">
-											Blog
-										</a>
-									</li>
-								</ul>
-							</nav>
-						
-						</div>
-						<div class="col-md-6">
-						<p class="copyright d-flex justify-content-end"> &copy 2021 Design by
-								<a th:href="@{/}">Vishweb Design</a> BootStrap Admin Dashboard
-							</p>
-						</div>
-						</div>
-							</div>
-					</footer>
-							
-				</div>
-							
-					 
-	 
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Nuevo Permiso </title>
+</head>
+<body>
+	<!-- CONTENIDO -->
+	<div layout:fragment="content">
+		<div class="card">
+			<div class="card-header"> <h3>Detalle permiso</h3></div>
+			<div class="card-body">
+				<form th:action="@{/permiso/editar}" th:object="${permiso}" method="post" class="form-horizontal">
+                    <div class="box-body row">
+                    	<input type="hidden" th:field="*{id}">
+                        <div class="form-group col-12">
+                            <label class="contpermiso-label">Nombre</label>
+                            <div>
+                                <input type="text" class="form-control"  th:field="*{nombrePermiso}" />
+                                <p class="text-danger d-block" th:if="${#fields.hasErrors('nombrePermiso')}" th:errors="*{nombrePermiso}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+	                 <!-- /.box-body -->
+	                 <div class="box-footer center">
+	                     <a th:href="@{/permiso/listar}">
+	                         <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
+	                     </a>
+	                     <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i> Save</button>
+	                 </div>
+	                 <!-- /.box-footer -->
+                </form>
+                
 			</div>
-		</div>
-	   
-		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script th:src="@{/admin/static/js/jquery-3.3.1.slim.min.js}"></script>
-		<script th:src="@{/admin/static/js/popper.min.js}"></script>
-		<script th:src="@{/admin/static/js/bootstrap.min.js}"></script>
-		<script th:src="@{/admin/static/js/jquery-3.3.1.min.js}"></script>
-	   
-	   
-	   <script type="text/javascript">
-		$(document).ready(function () {
-					$('#sidebarCollapse').on('click', function () {
-						$('#sidebar').toggleClass('active');
-						$('#content').toggleClass('active');
-					});
-					
-					$('.more-button,.body-overlay').on('click', function () {
-						$('#sidebar,.body-overlay').toggleClass('show-nav');
-					});
-					
-				});
-	 	</script>
-	 
-	</body>
+		</div>						
+
+	</div>
+	
+	<th:block layout:fragment="script">
+    <script>
+    </script>
+</th:block>
+
+</body>				
 	   
 </html>
 	 

@@ -37,13 +37,13 @@ public class UsuarioPrincipal implements UserDetails {
     public static UsuarioPrincipal build(Usuario usuario){
         List<GrantedAuthority> authorities =
                 usuario.getRoles().stream().map(
-                		rol -> new SimpleGrantedAuthority(rol.getNombreRol().name())
+                		rol -> new SimpleGrantedAuthority(rol.getNombreRol())
                 ).collect(Collectors.toList());
         
         List<GrantedAuthority> permisos =
         	    usuario.getRoles().stream().flatMap(
         	        rol -> (rol.getPermisos().stream().map(
-        	        			permiso -> new SimpleGrantedAuthority(permiso.getNombrePermiso().name())
+        	        			permiso -> new SimpleGrantedAuthority(permiso.getNombrePermiso())
         	            )
         	        )
         	    ).collect(Collectors.toList());

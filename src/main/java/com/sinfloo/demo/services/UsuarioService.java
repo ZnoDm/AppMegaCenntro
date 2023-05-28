@@ -37,7 +37,9 @@ public class UsuarioService {
 	public boolean existsById(int id) {
 		return usuarioRepository.existsById(id);
 	}
-
+	public Usuario get(Integer  id) {
+        return usuarioRepository.findById(id).get();
+    }
 
 	public boolean existsByNombreUsuario(String nombreUsuario) {
 		return usuarioRepository.existsByNombreUsuario(nombreUsuario);

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Listar Rol </title>
+</head>
+<body>
+	<!-- CONTENIDO -->
+	<div layout:fragment="content">
+		<!-- CONTENIDO -->
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">ASIGNAR PERMISOS</h3>
+			</div>
+			<hr>
+			<div class="card-content table-responsive">
+				<div class="row">
+		            <div class="col-12 col-lg-6 pt-3">
+						<h5>Roles</h5>
+		                <select class="form-select form-control" id="rol" name="rol" onchange="listadoRolPermisos(this.value)">
+		                    <option selected disabled >Lista de Roles</option>
+		                    <option th:each="rol: ${roles}"  th:value="${rol.id}" th:text="${rol.nombreRol}"></option>
+		                </select>
+		            </div>
+		            <div class="col-12 col-lg-6 pt-3">
+						<h5>Permisos</h5>
+						<ul class="list-group" id="listado">
+						</ul>
+
+		                <div class="list-group pt-3" id="listado">
+		                </div>
+		            </div>
+	            </div>
+            </div>
+        </div>
+    </div>
+	<th:block layout:fragment="script">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>
+			function enabledRolPermisos(idRol,idPermiso,value) {
+				console.log(idRol,idPermiso,value);
+				let actualizarRolPermisos = '/actualizarRolPermisos/?idRol='+ idRol +'&idPermiso='+idPermiso+'&valor='+(value?1:0);
+				$.ajax({
+					method:"GET",
+					url: actualizarRolPermisos,
+					success: function(response){ 
+						console.log(response);
+							
+					},
+					error: function(error_data){
+						console.log("error")
+						console.log(error_data)
+					}
+				})
+
+			}
+			function listadoRolPermisos(idRol) {
+				let listadoRolPermisos = '/listadoRolPermisos/?idRol='+ idRol;
+				$.ajax({
+					method:"GET",
+					url: listadoRolPermisos,
+					success: function(response){ 
+						console.log(response);
+						var listadoHTML = ''; // Variable para almacenar el HTML generado
+	
+						for (var i = 0; i < response.length; i++) {
+							var item = response[i];
+							var labelHTML = '<li class="list-group-item">' +
+											'<div class="d-flex justify-content-between">' +
+											'<input type="checkbox" onclick="enabledRolPermisos('+idRol+','+item.id+',this.checked)"'+ (item.activo? 'checked' : '') +'>' +
+											'<span>' + item.nombre + '</span>' +
+											'</div>' +
+											'</li>';
+							listadoHTML += labelHTML;
+						}
+						
+						document.getElementById('listado').innerHTML = listadoHTML; // Agrega el HTML generado al elemento con el id "listado"
+							
+					},
+					error: function(error_data){
+						console.log("error")
+						console.log(error_data)
+					}
+				})
+			}
+        
+    </script>
+</th:block>
+</body>
+

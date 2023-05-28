@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -21,10 +22,11 @@ public class Usuario {
 	private int id;
 	
 	@NotNull
-	@Column(unique =true)
+	@NotEmpty
 	private String nombreUsuario;
 	
 	@NotNull
+	@NotEmpty
 	private String password;
 
 	@ManyToMany(fetch =  FetchType.EAGER)
@@ -33,6 +35,8 @@ public class Usuario {
 				inverseJoinColumns = @JoinColumn(name= "rol_id") )
 	private Set<Rol> roles = new HashSet<>();
 
+
+	
 	public Usuario() {
 	}
 

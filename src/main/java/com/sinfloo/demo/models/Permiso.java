@@ -1,5 +1,8 @@
 package com.sinfloo.demo.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,9 +10,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.sinfloo.demo.enums.PermisoNombre;
 @Entity
 public class Permiso {
 	@Id
@@ -17,15 +21,26 @@ public class Permiso {
 	private int id;
 	
 	@NotNull
-	@Enumerated(EnumType.STRING)
-	@Column(unique =true)
-	private PermisoNombre nombrePermiso;
+	@NotEmpty
+	private String nombrePermiso;
 
 	public Permiso() {
 	}
 
-	public Permiso(PermisoNombre nombrePermiso) {
+	public Permiso(String nombrePermiso) {
 		this.nombrePermiso = nombrePermiso;
+	}
+	
+	@ManyToMany(mappedBy = "permisos")
+	private Set<Rol> roles = new HashSet<>();
+	 
+	
+	public Set<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Rol> roles) {
+		this.roles = roles;
 	}
 
 	public int getId() {
@@ -36,11 +51,11 @@ public class Permiso {
 		this.id = id;
 	}
 
-	public PermisoNombre getNombrePermiso() {
+	public String getNombrePermiso() {
 		return nombrePermiso;
 	}
 
-	public void setNombrePermiso(PermisoNombre nombrePermiso) {
+	public void setNombrePermiso(String nombrePermiso) {
 		this.nombrePermiso = nombrePermiso;
 	}
 
