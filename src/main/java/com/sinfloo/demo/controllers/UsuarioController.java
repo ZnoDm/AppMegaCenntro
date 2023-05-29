@@ -90,10 +90,13 @@ public class UsuarioController {
 	 
 	@GetMapping("/edit/{id}")
     public String editUsuario(@PathVariable("id") Integer id, Model model){
-		Usuario usuario = new Usuario();
-		usuario.setId(id);
+		Usuario usuario = usuarioService.get(id);
+		
 		
         UsuarioForm usuarioform =  new UsuarioForm();
+        usuarioform.setId(usuario.getId());
+        usuarioform.setNombreUsuario(usuario.getNombreUsuario());
+        usuarioform.setRol(usuario.getRoles().iterator().next().getNombreRol());
         model.addAttribute("usuarioform", usuarioform);
         List<Rol> roles = rolService.listarRoles();
     	model.addAttribute("roles",roles);
@@ -103,29 +106,15 @@ public class UsuarioController {
 	@PostMapping("/editar")
     public String editarUsuario(@Valid @ModelAttribute("usuarioform") UsuarioForm usuarioform, 
     		BindingResult result, Model model){
-
-        if(result.hasErrors()){
-        	List<Rol> roles = rolService.listarRoles();
-        	model.addAttribute("roles",roles);
-            return edit_template;
-        }
-        if(usuarioService.existsByNombreUsuario(usuarioform.getNombreUsuario())) {
-        	List<Rol> roles = rolService.listarRoles();
-        	model.addAttribute("roles",roles);
-        	 return edit_template;
-        }
-        System.out.println(result.hasErrors());
         
         Usuario usuario = usuarioService.get(usuarioform.getId());
         usuario.getRoles().clear();
         
-        String passwordEncoded = passwordEncoder.encode(usuarioform.getPassword());
-        Rol rolAdmin = rolService.getByNombreRol(usuarioform.getRol()).get();
+        Rol rol= rolService.getByNombreRol(usuarioform.getRol()).get();
         Set<Rol> roles = new HashSet<>();
-        roles.add(rolAdmin);
+        roles.add(rol);
         usuario.setRoles(roles);
         usuario.setNombreUsuario(usuarioform.getNombreUsuario());
-        usuario.setPassword(passwordEncoded);
         usuarioService.save(usuario);
         
         return list_redirect;

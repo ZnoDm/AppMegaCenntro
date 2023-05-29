@@ -1,11 +1,13 @@
 package com.sinfloo.demo.models;
 
-import java.util.Date;
+import java.util.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.sinfloo.demo.enums.TipoDocumento;
 
 @Entity
 public class Cliente {
@@ -25,11 +27,17 @@ public class Cliente {
 	private String email;
 	private String telefono;
     
-	@NotNull
-	private String tipoDocumentoIdentidad;
-	@NotNull
+
+	@Enumerated(EnumType.STRING)
+    private TipoDocumento tipoDocumentoIdentidad;
+
+	
     private String documentoIdentidad;
-    
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Venta> ventas;
+
+	
 	private Boolean activo;
 	private Boolean eliminado;
 	
@@ -50,29 +58,6 @@ public class Cliente {
 	public Cliente() {
 	}
 
-
-
-	public Cliente(int id, @NotNull String nombres, @NotNull String apellidos, String direccion, String email,
-			String telefono, @NotNull String tipoDocumentoIdentidad, @NotNull String documentoIdentidad, Boolean activo,
-			Boolean eliminado, String usuarioRegistro, Date fechaRegistro, String usuarioModificacion,
-			Date fechaModificacion, String usuarioEliminacion, Date fechaEliminacion) {
-		this.id = id;
-		this.nombres = nombres;
-		this.apellidos = apellidos;
-		this.direccion = direccion;
-		this.email = email;
-		this.telefono = telefono;
-		this.tipoDocumentoIdentidad = tipoDocumentoIdentidad;
-		this.documentoIdentidad = documentoIdentidad;
-		this.activo = activo;
-		this.eliminado = eliminado;
-		this.usuarioRegistro = usuarioRegistro;
-		this.fechaRegistro = fechaRegistro;
-		this.usuarioModificacion = usuarioModificacion;
-		this.fechaModificacion = fechaModificacion;
-		this.usuarioEliminacion = usuarioEliminacion;
-		this.fechaEliminacion = fechaEliminacion;
-	}
 
 
 
@@ -148,15 +133,6 @@ public class Cliente {
 
 
 
-	public String getTipoDocumentoIdentidad() {
-		return tipoDocumentoIdentidad;
-	}
-
-
-
-	public void setTipoDocumentoIdentidad(String tipoDocumentoIdentidad) {
-		this.tipoDocumentoIdentidad = tipoDocumentoIdentidad;
-	}
 
 
 
@@ -264,6 +240,32 @@ public class Cliente {
 
 	public void setFechaEliminacion(Date fechaEliminacion) {
 		this.fechaEliminacion = fechaEliminacion;
+	}
+
+
+
+	public List<Venta> getVentas() {
+		return ventas;
+	}
+
+
+
+	public void setVentas(List<Venta> ventas) {
+		this.ventas = ventas;
+	}
+
+
+
+
+	public TipoDocumento getTipoDocumentoIdentidad() {
+		return tipoDocumentoIdentidad;
+	}
+
+
+
+
+	public void setTipoDocumentoIdentidad(TipoDocumento tipoDocumentoIdentidad) {
+		this.tipoDocumentoIdentidad = tipoDocumentoIdentidad;
 	}
 	
 	

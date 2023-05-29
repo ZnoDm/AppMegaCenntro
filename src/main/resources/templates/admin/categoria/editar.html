@@ -4,6 +4,9 @@
       layout:decorate="layout">
 <head>
     <title>Editar Categoria </title>
+    <th:block layout:fragment="styles">
+    <link rel="stylesheet" th:href="@{/admin/static/css/switch.css}">
+    </th:block>
 </head>
 <body>
 	<!-- CONTENIDO -->
@@ -13,7 +16,7 @@
 			<div class="card-body">
 				<form th:action="@{/categoria/save}" th:object="${categoria}" method="post" class="form-horizontal">
                     <div class="box-body row">
-                    
+                        <input type="hidden" th:field="*{id}">
                         <div class="form-group col-12">
                             <label class="control-label">Nombre</label>
                             <div>
@@ -31,7 +34,7 @@
                         <div class="form-group col-12">
                         	<label class="control-label">Activo</label>
                         	<div class="d-flex">
-								<input type="checkbox" id="switch" name="activo" /><label for="switch">Toggle</label>
+								<input type="checkbox" id="switch" name="activo" th:checked="${categoria.activo}"/><label for="switch">Toggle</label>
 							</div>
                         </div>
                         

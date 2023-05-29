@@ -76,33 +76,6 @@ public class Producto {
 
 	
 
-	public Producto(int id, @NotNull String nombreProducto, @NotNull String descripcionProducto, @NotNull String codigo,
-			@NotNull String marca, @NotNull String modelo, @NotNull Integer stock, @NotNull double precioUnitario,
-			@NotNull String urlImagen, Boolean activo, Boolean eliminado, String usuarioRegistro, Date fechaRegistro,
-			String usuarioModificacion, Date fechaModificacion, String usuarioEliminacion, Date fechaEliminacion,
-			Categoria categoria) {
-		this.id = id;
-		this.nombreProducto = nombreProducto;
-		this.descripcionProducto = descripcionProducto;
-		this.codigo = codigo;
-		this.marca = marca;
-		this.modelo = modelo;
-		this.stock = stock;
-		this.precioUnitario = precioUnitario;
-		this.urlImagen = urlImagen;
-		this.activo = activo;
-		this.eliminado = eliminado;
-		this.usuarioRegistro = usuarioRegistro;
-		this.fechaRegistro = fechaRegistro;
-		this.usuarioModificacion = usuarioModificacion;
-		this.fechaModificacion = fechaModificacion;
-		this.usuarioEliminacion = usuarioEliminacion;
-		this.fechaEliminacion = fechaEliminacion;
-		this.categoria = categoria;
-	}
-
-
-
 	public int getId() {
 		return id;
 	}

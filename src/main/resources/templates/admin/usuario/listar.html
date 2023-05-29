@@ -24,13 +24,29 @@
 					<thead class="text-primary">
 						<tr>
 							<th>Nro</th>
+						<th>Acciones</th>
 							<th>Nombre Usuario</th>
 							<th>Rol</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="usuario, contador : ${usuarios.content}">
+						<tr th:each="usuario, contador : ${usuarios}">							
 							<td th:text="${contador.count}"></td> 
+							<td>
+								<div class="d-flex align-items-center">
+									<a th:href="@{'/usuario/edit/' + ${usuario.id}}" class="btn btn-outline-primary mr-2 mb-0 p-1 d-flex alig-items-center">
+										<i class="material-icons md-18">
+											edit
+										</i>
+									</a>
+									<a th:href="@{'/usuario/delete/' + ${usuario.id}}" class="btn btn-danger mb-0 p-1 d-flex alig-items-center">
+										<i class="material-icons md-18">
+										delete
+										</i>
+									</a>
+								</div>
+							</td>
+
 							<td th:text="${usuario.nombreUsuario}"></td>
 							<td th:text="${#strings.arrayJoin(usuario.roles.![nombreRol], ', ')}"></td>
 							

@@ -10,11 +10,9 @@ import com.sinfloo.demo.models.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 	
+	
 	Optional<Usuario> findByNombreUsuario(String nombreUsuario);
 	
 	boolean existsByNombreUsuario(String nombreUsuario);
 	
-	default Optional<Usuario> findById(Integer id) {
-		return Optional.empty();
-	}
 }

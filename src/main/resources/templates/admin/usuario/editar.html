@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout">
 <head>
-    <title>Nuevo Usuario </title>
+    <title>Editar Usuario </title>
 </head>
 <body>
 	<!-- CONTENIDO -->
@@ -11,8 +11,9 @@
 		<div class="card">
 			<div class="card-header"> <h3>Detalle usuario</h3></div>
 			<div class="card-body">
-				<form th:action="@{/usuario/save}" th:object="${usuarioform}" method="post" class="form-horizontal">
+				<form th:action="@{/usuario/editar}" th:object="${usuarioform}" method="post" class="form-horizontal">
                     <div class="box-body row">
+						<input type="hidden" th:field="*{id}">
                         <div class="form-group col-12 col-lg-6">
                             <label class="control-label">Nombre</label>
                             <div>
@@ -21,19 +22,11 @@
                             </div>
                             
                         </div>
-                         <div class="form-group col-12 col-lg-6">
-                            <label class="control-label">Password</label>
-                            <div>
-                                <input type="text" class="form-control"  th:field="*{password}" />
-                                <p class="text-danger d-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
-                            </div>
-                            
-                        </div>
                         
-                        <div class="form-group col-12 col-lg-6 pt-3">
-                            <label class="control-label">Rol</label>
-		                <select class="form-select form-control" id="rol" name="rol">
-		                    <option th:each="rol: ${roles}"  th:value="${rol.nombreRol}" th:text="${rol.nombreRol}"></option>
+                        <div class="form-group col-12 col-lg-6">
+							<label class="control-label">Rol</label>
+		                	<select class="form-select form-control" id="rol" name="rol">
+		                    <option th:each="rol: ${roles}"  th:value="${rol.nombreRol}" th:text="${rol.nombreRol}" th:selected="${rol.nombreRol == usuarioform.rol}"></option>
 		                </select>
 		                </div>
 		            

@@ -55,8 +55,6 @@ public class ProductoController {
     @PostMapping("/save")
     public String saveProducto(@Valid @ModelAttribute("producto") Producto producto, 
     		BindingResult result, Model model){
-    	
-    	System.out.println(producto.getActivo());
 
         if(result.hasErrors()){
             return add_template;
