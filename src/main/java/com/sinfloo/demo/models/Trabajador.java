@@ -53,7 +53,7 @@ public class Trabajador {
 
     private String telefono;
 
-     @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private Genero genero;
 
     @OneToMany(mappedBy = "trabajador")
@@ -76,6 +76,23 @@ public class Trabajador {
     private Date fechaEliminacion;
 
 	
+	@OneToOne()
+	@JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+    
+    
+    
+    
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+
 	public int getId() {
         return id;
     }

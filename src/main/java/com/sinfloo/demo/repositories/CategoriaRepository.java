@@ -25,6 +25,10 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
     
     
     @Modifying
-    @Query("UPDATE Categoria e SET e.eliminado = :eliminado WHERE e.id = :id")
-    void eliminar(@Param("id") Integer id, @Param("eliminado") Boolean eliminado);
+    @Query("UPDATE Categoria e SET e.activo = :activo, e.eliminado = :eliminado WHERE e.id = :id")
+    void eliminar(@Param("id") Integer id, @Param("activo") Boolean activo,@Param("eliminado") Boolean eliminado);
+    
+    Optional<Categoria> findByNombreCategoria(String nombreCategoria);
+    
+    boolean existsByNombreCategoria(String nombreCategoria);
 }

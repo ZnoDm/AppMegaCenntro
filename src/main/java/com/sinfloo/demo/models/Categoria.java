@@ -1,7 +1,7 @@
 package com.sinfloo.demo.models;
 
 import java.util.*;
-
+import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

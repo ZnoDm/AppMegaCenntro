@@ -14,9 +14,9 @@
 		<div class="card">
 			<div class="card-header"> <h3>Detalle categoria</h3></div>
 			<div class="card-body">
-				<form th:action="@{/categoria/save}" th:object="${categoria}" method="post" class="form-horizontal">
+				<form th:action="@{/categoria/edit}" th:object="${categoria}" method="post" class="form-horizontal">
                     <div class="box-body row">
-                        <input type="hidden" th:field="*{id}">
+                        <input type="hidden" name="id" th:field="*{id}">
                         <div class="form-group col-12">
                             <label class="control-label">Nombre</label>
                             <div>
@@ -57,6 +57,17 @@
 	
 	<th:block layout:fragment="script">
     <script>
+    var mensajeError = "[[${mensajeError}]]";
+			if(mensajeError){
+		    	Swal.fire({
+		    		position: 'center',
+		            icon: 'error',
+		            title: 'Error...',
+		            showConfirmButton: false,
+		            text: mensajeError,
+		            timer: 1500
+			  	})
+		  	}
     </script>
 </th:block>
 

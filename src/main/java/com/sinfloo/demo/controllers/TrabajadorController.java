@@ -58,24 +58,60 @@ public class TrabajadorController {
     	System.out.println(trabajador.getActivo());
 
         if(result.hasErrors()){
+        	model.addAttribute("mensajeError","Llene todos los campos");
             return add_template;
         }
         System.out.println(result.hasErrors());
         trabajadorService.save(trabajador);
-        return list_redirect;
+        String mensajeAlert = "";
+        mensajeAlert = "?mensajeAlert=Trabajador registrado.";
+        return list_redirect + mensajeAlert;
     }
 
+    @PostMapping("/edit")
+    public String editTrabajador(@Valid @ModelAttribute("trabajador") Trabajador trabajador, 
+    		BindingResult result, Model model){
+    	
+    	System.out.println(trabajador.getActivo());
 
+        if(result.hasErrors()){
+        	model.addAttribute("mensajeError","Llene todos los campos");
+            return edit_template;
+        }
+        System.out.println(result.hasErrors());
+        trabajadorService.save(trabajador);
+        String mensajeAlert = "";
+        mensajeAlert = "?mensajeAlert=Trabajador actualizado.";
+        
+        return list_redirect + mensajeAlert;
+    }
 
+    @GetMapping("/enabledDisabled/{id}/{estado}")
+    public String enabledDisabledTrabajador(@PathVariable("id") Integer id,@PathVariable("estado") Boolean estado, Model model) {
+    	String mensajeAlert = "";
+    	if(estado == true) {
+            trabajadorService.eliminar(id,true,false);
+            mensajeAlert = "?mensajeAlert=Trabajador habilitado.";
+    	}
+    	else {
+            trabajadorService.eliminar(id,false,true);
+            mensajeAlert = "?mensajeAlert=Trabajador deshabilitado.";
+    	}
+    		
+        return list_redirect+ mensajeAlert;
+    }
+    
     @GetMapping("/delete/{id}")
     public String deleteTrabajador(@PathVariable("id") Integer id, Model model) {
-        trabajadorService.eliminar(id,false);
+        trabajadorService.delete(id);
     
-        return list_redirect;
+        return list_redirect+ "?mensajeAlert=Trabajador eliminado.";
     }
 
     @GetMapping("/listar")
-    public String listTrabajador(@RequestParam(defaultValue = "0") int pagina,Model model) {
+    public String listTrabajador(@RequestParam(defaultValue = "0") int pagina,Model model,
+    		@RequestParam(required = false) String mensajeAlert,
+    		@RequestParam(required = false) String mensajeError) {
     	int tamanoPagina = 5;
     	List<Trabajador> listaTrabajadors = trabajadorService.listarTrabajadors();
         int totalTrabajadors = listaTrabajadors.size();
@@ -86,7 +122,8 @@ public class TrabajadorController {
         model.addAttribute("trabajadores", paginaTrabajadors);
         model.addAttribute("paginaActual", pagina);
         model.addAttribute("totalPaginas", (totalTrabajadors + tamanoPagina - 1) / tamanoPagina);
-        
+        model.addAttribute("mensajeAlert",mensajeAlert);
+        model.addAttribute("mensajeError",mensajeError);
 
         return list_template;
     }

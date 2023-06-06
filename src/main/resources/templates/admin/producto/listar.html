@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout">
 <head>
-    <title>Listar Prodcutos </title>
+    <title>Listar Productos </title>
 	<th:block layout:fragment="styles">
 		<link rel="stylesheet" th:href="@{/admin/static/css/switch.css}">
 		</th:block>
@@ -59,7 +59,9 @@
 						<td th:text="${producto.marca}"></td>
 						<td th:text="${producto.stock}"></td>
 						<td class="d-flex">
-							<input th:checked="${producto.activo}" type="checkbox" id="switch" /><label for="switch">Toggle</label>
+							<input th:checked="${producto.activo}" type="checkbox" id="switch" 
+							th:onclick="'toggleTrabajadorEstado(' + ${producto.id} + ', ' + ${producto.activo} + ')'" 
+							/><label for="switch">Toggle</label>
 						</td>
 					</tr>
 				</tbody>
@@ -84,8 +86,78 @@
 	
 	<th:block layout:fragment="script">
     <script>
+    	var mensajeAlert = "[[${mensajeAlert}]]";
+			if(mensajeAlert){
+				Swal.fire({
+		            position: 'center',
+		            icon: 'success',
+		            title: 'Success',
+		            text: mensajeAlert,
+		            showConfirmButton: false,
+		            timer: 1500
+		        });
+			}
+			
+		var mensajeError = "[[${mensajeError}]]";
+			if(mensajeError){
+		    	Swal.fire({
+		    		position: 'center',
+		            icon: 'error',
+		            title: 'Error...',
+		            showConfirmButton: false,
+		            text: mensajeError,
+		            timer: 1500
+			  	})
+		  	}
+		 function toggleTrabajadorEstado(id, estado) {
+		    var nuevoEstado = !estado; // Invertir el estado actual
+		    
+		    // Realizar una solicitud HTTP al controlador utilizando AJAX o Fetch
+		    // para llamar al método enabledDisabledTrabajador con los parámetros id y nuevoEstado
+		    // Puedes utilizar librerías como jQuery.ajax o la función fetch nativa de JavaScript
+		    
+		    // Ejemplo utilizando Fetch:
+		    fetch(`/producto/enabledDisabled/${id}/${nuevoEstado}`)
+		        .then(response => {
+		            // Verificar el estado de la respuesta y realizar acciones adicionales si es necesario
+		            if (response.ok) {
+		                // La solicitud se realizó correctamente, puedes mostrar una alerta, actualizar la página, etc.
+		                Swal.fire({
+		                    position: 'center',
+		                    icon: 'success',
+		                    title: 'Success',
+		                    text: 'Estado de producto actualizado.',
+		                    showConfirmButton: false,
+		                    timer: 1500
+		                });
+                
+		            } else {
+		                // Hubo un error en la solicitud, puedes mostrar una alerta de error o realizar acciones adicionales
+		                Swal.fire({
+		                    position: 'center',
+		                    icon: 'error',
+		                    title: 'Error...',
+		                    showConfirmButton: false,
+		                    text: 'Ocurrió un error al actualizar el estado del trabajador.',
+		                    timer: 1500
+		                });
+		            }
+		        })
+		        .catch(error => {
+		            // Ocurrió un error en la solicitud, puedes mostrar una alerta de error o realizar acciones adicionales
+		            Swal.fire({
+		                position: 'center',
+		                icon: 'error',
+		                title: 'Error...',
+		                showConfirmButton: false,
+		                text: 'Ocurrió un error al actualizar el estado del trabajador.',
+		                timer: 1500
+		            });
+		        });
+		}
+		 
     </script>
-</th:block>
+	</th:block>
 
 </body>				
 	   

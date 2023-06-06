@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +50,6 @@ public class UsuarioController {
         
     private String edit_template ="/admin/usuario/editar";
     private String add_template ="/admin/usuario/nuevo";
-    private String list_template ="/admin/usuario/listar";
     private String list_redirect ="redirect:/usuario/listar";
 
     @GetMapping("/add")
@@ -66,11 +67,13 @@ public class UsuarioController {
 
         if(result.hasErrors()){
         	List<Rol> roles = rolService.listarRoles();
+        	model.addAttribute("mensajeError","Llene todos los campos");
         	model.addAttribute("roles",roles);
             return add_template;
         }
-        if(!rolService.existsByNombreRol(usuarioform.getRol())) {
+        if(usuarioService.existsByNombreUsuario(usuarioform.getNombreUsuario())) {
         	List<Rol> roles = rolService.listarRoles();
+        	model.addAttribute("mensajeError","El Nombre de usuario ya existe");
         	model.addAttribute("roles",roles);
             return add_template;
         }
@@ -84,7 +87,7 @@ public class UsuarioController {
         usuario.setNombreUsuario(usuarioform.getNombreUsuario());
         usuario.setPassword(passwordEncoded);
         usuarioService.save(usuario);
-        return list_redirect;
+        return list_redirect+ "?mensajeAlert=Usuario creado.";
     }
 	
 	 
@@ -106,8 +109,26 @@ public class UsuarioController {
 	@PostMapping("/editar")
     public String editarUsuario(@Valid @ModelAttribute("usuarioform") UsuarioForm usuarioform, 
     		BindingResult result, Model model){
+		if(result.hasErrors() && usuarioform.getPassword() == null){
+			List<Rol> roles = rolService.listarRoles();
+			model.addAttribute("roles",roles);
+	        model.addAttribute("mensajeError","Llene todos los campos");
+	       return edit_template;
+        }
         
+	        
         Usuario usuario = usuarioService.get(usuarioform.getId());
+        System.out.println(usuarioService.getByNombreUsuario(usuarioform.getNombreUsuario()).get().getId());
+        if(usuarioService.getByNombreUsuario(usuarioform.getNombreUsuario()).get().getId() != usuarioform.getId()) {
+        	model.addAttribute("mensajeError","El Usuario ya existe");
+        	List<Rol> roles = rolService.listarRoles();
+			model.addAttribute("roles",roles);
+			return edit_template;
+        }
+        
+        
+	     
+        
         usuario.getRoles().clear();
         
         Rol rol= rolService.getByNombreRol(usuarioform.getRol()).get();
@@ -117,18 +138,37 @@ public class UsuarioController {
         usuario.setNombreUsuario(usuarioform.getNombreUsuario());
         usuarioService.save(usuario);
         
-        return list_redirect;
+        return list_redirect+ "?mensajeAlert=Usuario actualizado.";
     }
 	
 	
 	@GetMapping("/delete/{id}")
     public String deleteUsuario(@PathVariable("id") Integer id, Model model) {
-       return list_redirect;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	
+	     // Verificar si el usuario está autenticado
+	     if (authentication != null && authentication.isAuthenticated()) {
+	         // Obtener el nombre de usuario
+	         String username = authentication.getName();
+	         
+	         // Hacer algo con el nombre de usuario
+	         System.out.println("Usuario autenticado: " + username);
+	         System.out.println(usuarioService.getByIdUsuario(id).get().getNombreUsuario());
+	         if(usuarioService.getByIdUsuario(id).get().getNombreUsuario().equals(username)){
+	         	List<Rol> roles = rolService.listarRoles();
+	 			model.addAttribute("roles",roles);
+	 			return list_redirect+ "?mensajeError=No te puede eliminar a ti mismo, estas logeado."; 
+	         }
+	     }
+	     usuarioService.delete(id);
+	     return list_redirect+ "?mensajeAlert=Usuario eliminado.";
     }
     
     @GetMapping("/listar")
-    public String listarUsuarios(@RequestParam(defaultValue = "0") int pagina,Model model) {
-    	int tamanoPagina = 2;
+    public String listarUsuarios(@RequestParam(defaultValue = "0") int pagina,Model model,
+    		@RequestParam(required = false) String mensajeAlert,
+    		@RequestParam(required = false) String mensajeError) {
+    	int tamanoPagina = 5;
         List<Usuario> usuarios = usuarioService.listarUsuarios();
         int totalUsuarios = usuarios.size();
         int desde = pagina * tamanoPagina;
@@ -138,7 +178,8 @@ public class UsuarioController {
         model.addAttribute("usuarios", paginaUsuarios);
         model.addAttribute("paginaActual", pagina);
         model.addAttribute("totalPaginas", (totalUsuarios + tamanoPagina - 1) / tamanoPagina);
-
+        model.addAttribute("mensajeAlert",mensajeAlert);
+        model.addAttribute("mensajeError",mensajeError);
         return "/admin/usuario/listar";
     }
     

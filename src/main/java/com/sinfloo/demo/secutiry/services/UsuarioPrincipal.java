@@ -27,7 +27,7 @@ public class UsuarioPrincipal implements UserDetails {
     
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UsuarioPrincipal(int id, String nombreUsuario, String password, Collection<? extends GrantedAuthority> authorities) {
+     public UsuarioPrincipal(int id, String nombreUsuario, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.password = password;

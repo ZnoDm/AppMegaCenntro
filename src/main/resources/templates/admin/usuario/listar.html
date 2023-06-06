@@ -78,6 +78,29 @@
 	 
 <th:block layout:fragment="script">
     <script>
+    	var mensajeAlert = "[[${mensajeAlert}]]";
+			if(mensajeAlert){
+				Swal.fire({
+		            position: 'center',
+		            icon: 'success',
+		            title: 'Success',
+		            text: mensajeAlert,
+		            showConfirmButton: false,
+		            timer: 1500
+		        });
+			}
+			
+		var mensajeError = "[[${mensajeError}]]";
+			if(mensajeError){
+		    	Swal.fire({
+		    		position: 'center',
+		            icon: 'error',
+		            title: 'Error...',
+		            showConfirmButton: false,
+		            text: mensajeError,
+		            timer: 1500
+			  	})
+		  	}
     </script>
 </th:block>
 

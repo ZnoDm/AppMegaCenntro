@@ -1,8 +1,6 @@
 package com.sinfloo.demo.controllers;
 
-import com.sinfloo.demo.models.Categoria;
-import com.sinfloo.demo.models.Rol;
-import com.sinfloo.demo.models.Rol;
+import com.sinfloo.demo.models.*;
 import com.sinfloo.demo.services.RolService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,14 +26,12 @@ public class RolController {
     
     private String edit_template ="/admin/rol/editar";
 	private String add_template ="/admin/rol/nuevo";
-    private String list_template ="/admin/rol/listar";
     private String list_redirect ="redirect:/rol/listar";
 	    
 	@GetMapping("/add")
-    public String addRol(Rol rol, Model model){
-		
+    public String addRol(Model model){
+		Rol rol = new Rol();
         model.addAttribute("rol",rol);
-
         return add_template;
     }
 	
@@ -49,12 +39,18 @@ public class RolController {
     public String saveRol(@Valid @ModelAttribute("rol") Rol rol, 
     		BindingResult result, Model model){
 
-        if(result.hasErrors()){
+		if(result.hasErrors()){
+        	model.addAttribute("mensajeError","Llene todos los campos");
             return add_template;
         }
+        if(rolService.existsByNombreRol(rol.getNombreRol())) {
+        	model.addAttribute("mensajeError","El Rol ya existe");
+        	return add_template;
+        }
         System.out.println(result.hasErrors());
+        System.out.println(rolService.existsByNombreRol(rol.getNombreRol()));
         rolService.save(rol);
-        return list_redirect;
+        return list_redirect + "?mensajeAlert=Rol creado.";
     }
 	 
 	@PostMapping("/editar")
@@ -62,14 +58,16 @@ public class RolController {
     		BindingResult result, Model model){
 
         if(result.hasErrors()){
+        	model.addAttribute("mensajeError","Llene todos los campos");
             return edit_template;
         }
-        if(rolService.existsByNombreRol(rol.getNombreRol())) {
-        	 return edit_template;
+        if(rolService.getByNombreRol(rol.getNombreRol()).get().getId() != rol.getId() ) {
+        	model.addAttribute("mensajeError","El Rol ya existe");
+        	return edit_template;
         }
         System.out.println(result.hasErrors());
         rolService.save(rol);
-        return list_redirect;
+        return list_redirect + "?mensajeAlert=Rol actualizado.";
     }
 	 
 	@GetMapping("/edit/{id}")
@@ -83,12 +81,13 @@ public class RolController {
 	@GetMapping("/delete/{id}")
     public String deleteRol(@PathVariable("id") Integer id, Model model) {
 	 	rolService.delete(id);
-       return list_redirect;
+       return list_redirect+ "?mensajeAlert=Rol eliminado.";
     }
 
 	 
     @GetMapping("/listar")
-    public String listarRoles(@RequestParam(defaultValue = "0") int pagina,Model model) {
+    public String listarRoles(@RequestParam(defaultValue = "0") int pagina,Model model,
+    		@RequestParam(required = false) String mensajeAlert) {
     	int tamanoPagina = 5;
         List<Rol> roles = rolService.listarRoles();
         int totalRoles = roles.size();
@@ -100,6 +99,7 @@ public class RolController {
         model.addAttribute("paginaActual", pagina);
         model.addAttribute("totalPaginas", (totalRoles + tamanoPagina - 1) / tamanoPagina);
 
+        model.addAttribute("mensajeAlert",mensajeAlert);
         return "/admin/rol/listar";
     }
     

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sinfloo.demo.repositories.UsuarioRepository;
+import com.sinfloo.demo.models.Rol;
 import com.sinfloo.demo.models.Usuario;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class UsuarioService {
 	}
 	
 	
+	
 	public Optional<Usuario> getByNombreUsuario(String nombreUsuario){
 		return usuarioRepository.findByNombreUsuario(nombreUsuario);
 	}
@@ -34,6 +36,20 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 	}
 	
+	public void delete (Integer id) {
+		 Usuario usuario = usuarioRepository.findById(id).orElse(null);
+	        if (usuario != null) {
+
+	        	// Eliminar las asociaciones en la tabla intermedia
+	        	usuario.getRoles().clear();
+
+	        	// Guardar el objeto Rol actualizado para eliminar las asociaciones en la tabla intermedia
+	        	usuarioRepository.save(usuario);
+
+	        	// Eliminar el objeto Rol
+	        	usuarioRepository.delete(usuario);
+	        }
+	}
 	public boolean existsById(int id) {
 		return usuarioRepository.existsById(id);
 	}
@@ -44,4 +60,6 @@ public class UsuarioService {
 	public boolean existsByNombreUsuario(String nombreUsuario) {
 		return usuarioRepository.existsByNombreUsuario(nombreUsuario);
 	}
+	
+	
 }

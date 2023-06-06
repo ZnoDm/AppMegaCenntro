@@ -1,235 +1,322 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org"
-       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  	<head>
-	    <!-- Required meta tags -->
-	    <title>ADMIN</title>
-	   	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	   	<link rel="icon" type="img/png" th:href="@{https://www.thymeleaf.org/images/thymeleaf.png}">
-		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" th:href="@{/admin/static/css/bootstrap.min.css}">
-		<!----css3---->
-		<link rel="stylesheet" th:href="@{/admin/static/css/custom.css}">
-		<!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-		<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
-		<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
-		<link th:href="@{https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap}" rel="stylesheet">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <title>Nueva Venta </title>
+    <th:block layout:fragment="styles">
+    <link rel="stylesheet" th:href="@{/admin/static/css/switch.css}">
+    <link rel="stylesheet" th:href="@{/admin/static/css/jquery-ui.min.css}">
+    </th:block>
+</head>
+<body>
+	<!-- CONTENIDO -->
+	<div layout:fragment="content">
+		<div class="card">
+			<div class="card-header"> <h3>Venta</h3></div>
+			<div class="card-body">
+				<form th:action="@{/venta/save}" th:object="${venta}" method="post" class="form-horizontal">
+                    <div class="box-body row">
+                    	<div class="form-group col-12">
+                    		<h5>Trabajador</h5>
+                    	</div>
+                    	<input type="hidden" th:field="*{trabajador.id}" readonly/>
+                    	<div class="form-group col-12 col-lg-6">
+                            <label class="control-label">Nombres</label>
+                            <div>
+                                <input type="text" class="form-control" th:field="*{trabajador.nombres}" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 col-lg-6">
+                            <label class="control-label">Apellidos</label>
+                            <div>
+                                <input type="text" class="form-control" th:field="*{trabajador.apellidos}" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-group col-12"><hr></div>
+                        
+                        
+                        <div class="form-group col-12">
+                    		<h5>Cliente</h5>
+                    	</div>
+                    	<input type="hidden" th:field="*{cliente.id}" readonly/>
+                   	 	<div class="form-group col-7 col-lg-3">
+                           <label for="buscar_cliente" class="col-form-label" th:text="'Buscar cliente'"></label>
+							<input type="text" name="buscar_cliente" id="buscar_cliente" class="form-control" />
+                       	</div>
+                       	<div class="form-group col-4 col-lg-9 d-flex align-items-end">
+                           <button type="button" class="btn btn-primary text-white cursor-pointer" onclick="consultar_reniec()">Consultar RENIEC</button>
+                           <a class="btn btn-success text-white ml-3 cursor-pointer">Nuevo</a>
+                       	</div>
+                        
+                    	<div class="form-group col-12 col-lg-6">
+                            <label class="control-label">Nombres</label>
+                            <div>
+                                <input type="text" class="form-control" th:field="*{cliente.nombres}" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Tipo Documento</label>
+                            <div>
+                                <input type="text" class="form-control" th:field="*{cliente.tipoDocumentoIdentidad}" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Documento Identidad</label>
+                            <input type="text" class="form-control" th:field="*{cliente.documentoIdentidad}" readonly/>
+                        </div>
+                        <div class="form-group col-12"><hr></div>
+                       	<div class="form-group col-12">
+                    		<h5>Detalle de Venta</h5>
+                    	</div>
+                    	<div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Tipo Documento</label>
+                            <select class="form-select form-control" id="tipoDocumento" name="tipoDocumento">
+                                <option value="BOLETA">BOLETA</option>
+                                <option value="FACTURA">FACTURA</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Tipo Moneda</label>
+                            <select class="form-select form-control" id="tipoMoneda" name="tipoMoneda" onchange="actualizarTasaCambio(event)">
+                                <option value="SOLES">SOLES</option>
+                                <option value="DOLARES">DOLARES</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Tasa de Cambio</label>
+                            <input type="text" class="form-control" th:field="*{tasaCambio}" readonly/>
+                        </div>
+                    	<div class="form-group col-12 col-lg-5">
+                            <label for="buscar_producto" class="col-form-label"
+							th:text="'Buscar producto'"></label>
+							<input type="text" name="buscar_producto" id="buscar_producto"
+								class="form-control" />
+                        </div>
+                        <div class="form-group col-12">
+                        	<table class="d-none">
 
-		<!--google material icon-->
-		<link th:href="@{https://fonts.googleapis.com/css2?family=Material+Icons}" rel="stylesheet">
-	</head>
-	<body>
-	 	<div class="wrapper">
-	 		<div class="body-overlay"></div>
-			 <!-- Sidebar  -->
-			 <nav id="sidebar">
-				 <div class="sidebar-header">
-					 <h3><img th:src="@{/admin/static/img/logo.png}" class="img-fluid"/><span>Vishweb design</span></h3>
-				 </div>
-				 <ul class="list-unstyled components">
-				 	<li  class="active">
-						<a th:href="@{/}" class="dashboard"><i class="material-icons">dashboard</i><span>Dashboard</span></a>
-					 </li>
-			 
-				   	<div class="small-screen navbar-display">
-					 <li class="dropdown d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{#homeSubmenu0}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-						 <i class="material-icons">notifications</i><span> 4 notification</span></a>
-						 <ul class="collapse list-unstyled menu" id="homeSubmenu0">
-										 <li>
-										 <a th:href="@{/}">You have 5 new messages</a>
-										 </li>
-										 <li>
-											 <a th:href="@{/}">You're now friend with Mike</a>
-										 </li>
-										 <li>
-											 <a th:href="@{/}">Wish Mary on her birthday!</a>
-										 </li>
-										 <li>
-											 <a th:href="@{/}">5 warnings in Server Console</a>
-										 </li>
-						 </ul>
-					 </li>
-					 
-					 <li  class="d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{/}"><i class="material-icons">apps</i><span>apps</span></a>
-					 </li>
-					 
-					  <li  class="d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{/}"><i class="material-icons">person</i><span>user</span></a>
-					 </li>
-					 
-					 <li  class="d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{/}"><i class="material-icons">settings</i><span>setting</span></a>
-					 </li>
-					</div>
-				 
-				 
-					<li class="dropdown">
-						 <a th:href="@{#homeSubmenu1}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-						 <i class="material-icons">aspect_ratio</i><span>Layouts</span></a>
-						 <ul class="collapse list-unstyled menu" id="homeSubmenu1">
-							 <li>
-								 <a th:href="@{/}">Home 1</a>
-							 </li>
-							 <li>
-								 <a th:href="@{/}">Home 2</a>
-							 </li>
-							 <li>
-								 <a th:href="@{/}">Home 3</a>
-							 </li>
-						 </ul>
-					</li>
-					 
-					
-					
-				</ul>
-			 </nav>
-			 
-			 
-	 
-			<!-- Page Content  -->
-			<div id="content">
-			
-				<div class="top-navbar">
-					<nav class="navbar navbar-expand-lg">
-						<div class="container-fluid">
-		
-							<button type="button" id="sidebarCollapse" class="d-xl-block d-lg-block d-md-mone d-none">
-								<span class="material-icons">arrow_back_ios</span>
-							</button>
-							
-							<a class="navbar-brand" th:href="@{/}"> Dashboard </a>
-							
-							<button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
-							data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-								<span class="material-icons">more_vert</span>
-							</button>
-		
-							<div class="collapse navbar-collapse d-lg-block d-xl-block d-sm-none d-md-none d-none" id="navbarSupportedContent">
-								<ul class="nav navbar-nav ml-auto">   
-									<li class="dropdown nav-item active">
-										<a th:href="@{/}" class="nav-link" data-toggle="dropdown">
-										<span class="material-icons">notifications</span>
-										<span class="notification">4</span>
-									</a>
-										<ul class="dropdown-menu">
-											<li>
-												<a th:href="@{/}">You have 5 new messages</a>
-											</li>
-											<li>
-												<a th:href="@{/}">You're now friend with Mike</a>
-											</li>
-											<li>
-												<a th:href="@{/}">Wish Mary on her birthday!</a>
-											</li>
-											<li>
-												<a th:href="@{/}">5 warnings in Server Console</a>
-											</li>
-										
-										</ul>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" th:href="@{/}">
-										<span class="material-icons">apps</span>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" th:href="@{/}">
-										<span class="material-icons">person</span>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" th:href="@{/}">
-										<span class="material-icons">settings</span>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</nav>
-				</div>
-					
-					
-				<div class="main-content">
-					<div class="row">
-						<div class="col-12">
-							<!-- CONTENIDO -->
-							<H1>Acá estarán los reportes y graficos generales</H1>
-
-						</div>
-					</div>
-							
-					<footer class="footer">
-						<div class="container-fluid">
-						<div class="row">
-						<div class="col-md-6">
-							<nav class="d-flex">
-								<ul class="m-0 p-0">
-									<li>
-										<a th:href="@{/}">
-											Home
-										</a>
-									</li>
-									<li>
-										<a th:href="@{/}">
-											Company
-										</a>
-									</li>
-									<li>
-										<a th:href="@{/}">
-											Portfolio
-										</a>
-									</li>
-									<li>
-										<a th:href="@{/}">
-											Blog
-										</a>
-									</li>
-								</ul>
-							</nav>
+								<tbody id="plantillaItemsFactura">
+									<tr id="row_{ID}">
+										<td class="d-none"><input type="hidden" value="{ID}"
+											name="item_id[]" /></td>
+										<td>{NOMBRE}</td>
+										<td>{PRECIO}</td>
+										<td><input type="number" value="1" name="cantidad[]"
+											id="cantidad_{ID}" class="form-control col-sm-4" onchange="itemsHelper.calcularImporte({ID}, {PRECIO}, this.value);"/></td>
+										<td><span id="total_importe_{ID}">0</span></td>
+										<td><a href="#" class="btn btn-danger btn-sm" onclick="itemsHelper.eliminarLineaFactura({ID});">x</a></td>
+									</tr>
 						
-						</div>
-						<div class="col-md-6">
-						<p class="copyright d-flex justify-content-end"> &copy 2021 Design by
-								<a th:href="@{/}">Vishweb Design</a> BootStrap Admin Dashboard
-							</p>
-						</div>
-						</div>
-							</div>
-					</footer>
-							
-				</div>
-							
-					 
-	 
+								</tbody>
+						
+							</table>
+
+							<table id="cargarItemProductos"
+							class="table table-sm table-striped table-hover">
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Precio</th>
+										<th>Cantidad</th>
+										<th>Total</th>
+										<th>Eliminar</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<h5>Total <span class="badge badge-secondary" id="gran_total">0</span></h5>
+                        
+                        </div>
+                    </div>
+                    <hr>
+	                 <!-- /.box-body -->
+	                 <div class="box-footer center">
+	                     <a th:href="@{/venta/listar}">
+	                         <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
+	                     </a>
+	                     <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i> Save</button>
+	                 </div>
+	                 <!-- /.box-footer -->
+                </form>
+                
 			</div>
-		</div>
-	   
-		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script th:src="@{/admin/static/js/jquery-3.3.1.slim.min.js}"></script>
-		<script th:src="@{/admin/static/js/popper.min.js}"></script>
-		<script th:src="@{/admin/static/js/bootstrap.min.js}"></script>
-		<script th:src="@{/admin/static/js/jquery-3.3.1.min.js}"></script>
-	   
-	   
-	   <script type="text/javascript">
-		$(document).ready(function () {
-					$('#sidebarCollapse').on('click', function () {
-						$('#sidebar').toggleClass('active');
-						$('#content').toggleClass('active');
+		</div>						
+
+	</div>
+	
+	<th:block layout:fragment="script">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+
+    <script>
+    	
+    	function actualizarTasaCambio(event){
+    		var selectedValue = event.target.value;
+    		if(selectedValue  == "DOLARES"){
+    			$("#tasaCambio").val(3.67);
+    		}else{
+    			$("#tasaCambio").val(0.0);
+    		}
+    	}
+    	function consultar_reniec() {
+    		var term =  $("#buscar_cliente").val();
+				let url = '/cliente/consultar-clientes/'+ term + '?term='+ term;
+				$.ajax({
+					method:"GET",
+					url: url,
+					success: function(response){ 
+						console.log(response.id);
+						$("#cliente\\.id").val(response.id);
+						$("#cliente\\.tipoDocumentoIdentidad").val(response.tipoDocumentoIdentidad);
+					    $("#cliente\\.documentoIdentidad").val(response.documentoIdentidad);
+					    $("#cliente\\.nombres").val(response.nombres);	
+					    Swal.fire({
+					            position: 'top-end',
+					            icon: 'success',
+					            title: 'Persona encontrada.',
+					            showConfirmButton: false,
+					            timer: 1500
+					        });
+					},
+					error: function(error_data){
+						console.log(error_data)
+						Swal.fire({
+					            position: 'top-end',
+					            icon: 'error',
+					            title: 'Ha ocurrido un error.',
+					            showConfirmButton: false,
+					            timer: 1500
+					          });
+					}
+				})
+
+			}
+			
+    	var mensajeError = "[[${mensajeError}]]";
+			if(mensajeError){
+		    	Swal.fire({
+		    		position: 'center',
+		            icon: 'error',
+		            title: 'Error...',
+		            showConfirmButton: false,
+		            text: mensajeError,
+		            timer: 1500
+			  	})
+		  	}
+		  	
+			$("#buscar_producto").autocomplete({
+
+				source : function(request, response) {
+					$.ajax({
+						url : "/producto/cargar-productos/" + request.term,
+						dataType : "json",
+						data : {
+							term : request.term
+						},
+						success : function(data) {
+							response($.map(data, function(item) {
+								return {
+									value : item.id,
+									label : item.nombreProducto,
+									precio : item.precioUnitario,
+								};
+							}));
+						},
+					});
+				},
+				select : function(event, ui) {
+					//$("#buscar_producto").val(ui.item.label);
+
+					if(itemsHelper.hasProducto(ui.item.value)){
+						itemsHelper.incrementaCantidad(ui.item.value, ui.item.precio);
+						return false;
+					}
+					
+					var linea = $("#plantillaItemsFactura").html();
+
+					linea = linea.replace(/{ID}/g, ui.item.value);
+					linea = linea.replace(/{NOMBRE}/g, ui.item.label);
+					linea = linea.replace(/{PRECIO}/g, ui.item.precio);
+
+					$("#cargarItemProductos tbody").append(linea);
+					itemsHelper.calcularImporte(ui.item.value, ui.item.precio, 1);
+
+					return false;
+				}
+			});
+		
+			var itemsHelper = {
+				calcularImporte: function(id, precio, cantidad){
+					$("#total_importe_" + id).html(parseFloat(precio) * parseFloat(cantidad));
+					this.calcularGranTotal();
+				},
+				hasProducto: function(id){
+					
+					var resultado = false;
+					
+					$('input[name="item_id[]"]').each(function(){
+						if(parseInt(id) == parseInt($(this).val()) ){
+							resultado = true;
+						}
 					});
 					
-					$('.more-button,.body-overlay').on('click', function () {
-						$('#sidebar,.body-overlay').toggleClass('show-nav');
+					return resultado;
+				},
+				incrementaCantidad: function(id, precio){
+					var cantidad = $("#cantidad_" + id).val() ? parseInt($("#cantidad_" + id).val()) : 0;
+					$("#cantidad_" + id).val(++cantidad);
+					this.calcularImporte(id, precio, cantidad);
+				},
+				eliminarLineaFactura: function(id){
+					$("#row_" + id).remove();
+					this.calcularGranTotal();
+				},
+				calcularGranTotal: function(){
+					var total = 0;
+					
+					$('span[id^="total_importe_"]').each(function(){
+						total += parseFloat($(this).html());
 					});
 					
-				});
-	 	</script>
-	 
-	</body>
+					$('#gran_total').html(total);
+				}
+			}
+			$("#buscar_cliente").autocomplete({
+				source : function(request, response) {
+					$.ajax({
+						url : "/cliente/cargar-clientes/" + request.term,
+						dataType : "json",
+						data : {
+							term : request.term
+						},
+						success : function(data) {
+							response($.map(data, function(item) {
+								return {
+									value : item,
+									label : item.nombres,
+									id : item.id,
+									tipoDocumentoIdentidad : item.tipoDocumentoIdentidad,
+									documentoIdentidad : item.documentoIdentidad,
+								};
+							}));
+						},
+					});
+				},
+				select : function(event, ui) {
+					console.log(ui.item.id);
+					$("#cliente\\.id").val(ui.item.id);
+				    $("#cliente\\.tipoDocumentoIdentidad").val(ui.item.tipoDocumentoIdentidad);
+				    $("#cliente\\.documentoIdentidad").val(ui.item.documentoIdentidad);
+				    $("#cliente\\.nombres").val(ui.item.label);
+				    return false;
+				}
+			});
+    </script>
+</th:block>
+
+</body>				
 	   
 </html>
 	 

@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout">
 <head>
-    <title>Nuevo Trabajador </title>
+    <title>Nuevo Proveedor</title>
     <th:block layout:fragment="styles">
     <link rel="stylesheet" th:href="@{/admin/static/css/switch.css}">
     </th:block>
@@ -12,26 +12,19 @@
 	<!-- CONTENIDO -->
 	<div layout:fragment="content">
 		<div class="card">
-			<div class="card-header"> <h3>Detalle trabajador</h3></div>
+			<div class="card-header"> <h3>Detalle proveedor</h3></div>
 			<div class="card-body">
-				<form th:action="@{/trabajador/save}" th:object="${trabajador}" method="post" class="form-horizontal">
+				<form th:action="@{/proveedor/save}" th:object="${proveedor}" method="post" class="form-horizontal">
                     <div class="box-body row">
                     
-                        <div class="form-group col-12 col-lg-6">
+                        <div class="form-group col-12">
                             <label class="control-label">Nombres</label>
                             <div>
-                                <input type="text" class="form-control"  th:field="*{nombres}" />
+                                <input type="text" class="form-control" name="nombres" th:field="*{nombres}" />
                                 <p class="text-danger d-block" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></p>
                             </div>
                         </div>
-                        <div class="form-group col-12 col-lg-6">
-                            <label class="control-label">Apellidos</label>
-                            <div>
-                                <input type="text" class="form-control"  th:field="*{apellidos}" />
-                                <p class="text-danger d-block" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></p>
-                            </div>
-                        </div>
-                        <div class="form-group col-12 col-lg-6">
+						<div class="form-group col-12 col-lg-6">
                             <label class="control-label">Tipo Documento Identidad</label>
                             <select class="form-select form-control" id="tipoDocumentoIdentidad" name="tipoDocumentoIdentidad">
                                 <option value="DNI">L.E / DNI</option>
@@ -39,55 +32,43 @@
                                 <option value="PASAPORTE">PASAPORTE</option>
                             </select>
                         </div>
-                        <div class="form-group col-12 col-lg-6">
+						<div class="form-group col-12 col-lg-6">
                             <label class="control-label">Documento Identidad</label>
                             <div>
-                                <input type="text" class="form-control"  th:field="*{documentoIdentidad}" />
+                                <input type="text" class="form-control" name="documentoIdentidad" th:field="*{documentoIdentidad}" />
                                 <p class="text-danger d-block" th:if="${#fields.hasErrors('documentoIdentidad')}" th:errors="*{documentoIdentidad}"></p>
                             </div>
                         </div>
-                        
-                        <div class="form-group col-12 col-lg-6">
+
+						<div class="form-group col-12">
                             <label class="control-label">Direccion</label>
                             <div>
-                                <input type="text" class="form-control"  th:field="*{direccion}" />
+                                <input type="text" class="form-control" name="direccion" th:field="*{direccion}" />
                                 <p class="text-danger d-block" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></p>
                             </div>
                         </div>
-                        <div class="form-group col-12 col-lg-6">
+
+						<div class="form-group col-12">
                             <label class="control-label">Email</label>
                             <div>
-                                <input type="text" class="form-control"  th:field="*{email}" />
+                                <input type="text" class="form-control" name="email" th:field="*{email}" />
                                 <p class="text-danger d-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                             </div>
                         </div>
-                        <div class="form-group col-12 col-lg-6">
+
+						<div class="form-group col-12">
                             <label class="control-label">Telefono</label>
                             <div>
-                                <input type="text" class="form-control"  th:field="*{telefono}" />
+                                <input type="text" class="form-control" name="telefono" th:field="*{telefono}" />
                                 <p class="text-danger d-block" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></p>
                             </div>
-                        </div>
-                        <div class="form-group col-12 col-lg-6">
-                            <label class="control-label">Genero</label>
-                            <select class="form-select form-control" id="genero" name="genero">
-                                <option value="MASCULINO">Masculino</option>
-                                <option value="FEMENINO">Femenino</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group col-12">
-                        	<label class="control-label">Activo</label>
-                        	<div class="d-flex">
-								<input type="checkbox" id="switch" name="activo" checked="checked"/><label for="switch">Toggle</label>
-							</div>
                         </div>
                         
                     </div>
                     <hr>
 	                 <!-- /.box-body -->
 	                 <div class="box-footer center">
-	                     <a th:href="@{/trabajador/listar}">
+	                     <a th:href="@{/proveedor/listar}">
 	                         <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
 	                     </a>
 	                     <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i> Save</button>
@@ -101,8 +82,8 @@
 	</div>
 	
 	<th:block layout:fragment="script">
-	    <script>
-	    	var mensajeError = "[[${mensajeError}]]";
+     <script>
+    	var mensajeError = "[[${mensajeError}]]";
 			if(mensajeError){
 		    	Swal.fire({
 		    		position: 'center',
@@ -113,8 +94,9 @@
 		            timer: 1500
 			  	})
 		  	}
-	    </script>
+    </script>
 	</th:block>
+
 </body>				
 	   
 </html>

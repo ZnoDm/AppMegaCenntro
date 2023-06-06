@@ -27,7 +27,7 @@
 			 <!-- Sidebar  -->
 			 <nav id="sidebar">
 				 <div class="sidebar-header">
-					 <h3><img th:src="@{/admin/static/img/logo.png}" class="img-fluid"/><span>Vishweb design</span></h3>
+					 <h3><img th:src="@{https://cdn.shopify.com/s/files/1/0530/6987/3301/files/Diseno_Megacentro_para_web_3_d57f43b9-009d-419a-aa97-7c3e7724f561.png?v=1674058996&width=280}" class="img-fluid"/><span>MEGA CENTRO</span></h3>
 				 </div>
 				 <ul class="list-unstyled components">
 				 	<li  class="active">
@@ -35,37 +35,7 @@
 					 </li>
 			 
 				   	<div class="small-screen navbar-display">
-					 <li class="dropdown d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{#homeSubmenu0}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-						 <i class="material-icons">notifications</i><span> 4 notification</span></a>
-						 <ul class="collapse list-unstyled menu" id="homeSubmenu0">
-										 <li>
-										 <a th:href="@{/}">You have 5 new messages</a>
-										 </li>
-										 <li>
-											 <a th:href="@{/}">You're now friend with Mike</a>
-										 </li>
-										 <li>
-											 <a th:href="@{/}">Wish Mary on her birthday!</a>
-										 </li>
-										 <li>
-											 <a th:href="@{/}">5 warnings in Server Console</a>
-										 </li>
-						 </ul>
-					 </li>
 					 
-					 <li  class="d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{/}"><i class="material-icons">apps</i><span>apps</span></a>
-					 </li>
-					 
-					  <li  class="d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{/}"><i class="material-icons">person</i><span>user</span></a>
-					 </li>
-					 
-					 <li  class="d-lg-none d-md-block d-xl-none d-sm-block">
-						 <a th:href="@{/}"><i class="material-icons">settings</i><span>setting</span></a>
-					 </li>
-					</div>
 				 
 					
 					<li class="dropdown">
@@ -107,10 +77,10 @@
 								<a th:href="@{/producto/listar}">Productos</a>
 							</li>
 							<li>
-								<a th:href="@{/usuario/listar}">Clientes</a>
+								<a th:href="@{/cliente/listar}">Clientes</a>
 							</li>
 							<li>
-								<a th:href="@{/usuario/listar}">Proveedores</a>
+								<a th:href="@{/proveedor/listar}">Proveedores</a>
 							</li>
 						</ul>
 				   </li>
@@ -120,7 +90,7 @@
 						<i class="material-icons">monetization_on</i><span>Financiera</span></a>
 						<ul class="collapse list-unstyled menu" id="homeSubmenu4">
 							<li>
-								<a th:href="@{/categoria/listar}">Ventas</a>
+								<a th:href="@{/venta/listar}">Ventas</a>
 							</li>
 							<li>
 								<a th:href="@{/producto/listar}">Notas de Salida</a>
@@ -147,7 +117,7 @@
 								<span class="material-icons">arrow_back_ios</span>
 							</button>
 							
-							<a class="navbar-brand" th:href="@{/}"> Dashboard </a>
+							<a class="navbar-brand" th:href="@{/}" style="font-size: 1rem;font-weight: 600"> DASHBOARD </a>
 							
 							<button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
 							data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -179,22 +149,12 @@
 									</li>
 									<li class="nav-item">
 										<a class="nav-link" th:href="@{/}">
-										<span class="material-icons">apps</span>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" th:href="@{/}">
-										<span class="material-icons">person</span>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" th:href="@{/}">
 										<span class="material-icons">settings</span>
 										</a>
 									</li>
 									<li class="nav-item">
 										<a class="nav-link d-flex align-items-center" th:href="@{/logout}">
-										<span class="pr-2">Salir</span> 
+										<span class="pr-2" style="font-weight: 600">Salir</span> 
 										<span class="material-icons">logout</span>
 										</a>
 									</li>
@@ -240,6 +200,7 @@
 					
 				});
 	 	</script>
+	 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	 	<th:block layout:fragment="script"></th:block>
 	</body>
 	   

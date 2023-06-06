@@ -4,6 +4,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,7 +46,27 @@ public class CategoriaController {
 
         return add_template;
     }
+	 @PostMapping("/save")
+	    public String saveCategoria(@Valid @ModelAttribute("categoria") Categoria categoria, 
+	    		BindingResult result, Model model){
+	    	
+	    	System.out.println(categoria.getActivo());
 
+	        if(result.hasErrors()){
+	        	model.addAttribute("mensajeError","Llene todos los campos");
+	            return add_template;
+	        }
+	        if(categoriaService.existsByNombreCategoria(categoria.getNombreCategoria())) {
+	        	model.addAttribute("mensajeError","La Categoria ya existe");
+	          	 return add_template;
+	           }
+	        
+	        System.out.println(result.hasErrors());
+	        categoriaService.save(categoria);
+	        String mensajeAlert = "";
+	        mensajeAlert = "?mensajeAlert=Categoria registrado.";
+	        return list_redirect + mensajeAlert;
+	    }
 
     @GetMapping("/edit/{id}")
     public String editCategoria(@PathVariable("id") Integer id, Model model){
@@ -51,31 +75,57 @@ public class CategoriaController {
 
         return edit_template;
     }
-    @PostMapping("/save")
-    public String saveCategoria(@Valid @ModelAttribute("categoria") Categoria categoria, 
+   
+    @PostMapping("/edit")
+    public String editCategoria(@Valid @ModelAttribute("categoria") Categoria categoria, 
     		BindingResult result, Model model){
     	
     	System.out.println(categoria.getActivo());
 
         if(result.hasErrors()){
-            return add_template;
+        	model.addAttribute("mensajeError","Llene todos los campos");
+            return edit_template;
+        }
+        
+        if(categoriaService.getByNombreCategoria(categoria.getNombreCategoria()).get().getId() != categoria.getId() ) {
+        	model.addAttribute("mensajeError","La Categoria ya existe");
+        	return edit_template;
         }
         System.out.println(result.hasErrors());
         categoriaService.save(categoria);
-        return list_redirect;
+        String mensajeAlert = "";
+        mensajeAlert = "?mensajeAlert=Categoria actualizado.";
+        
+        return list_redirect + mensajeAlert;
     }
 
 
 
+    @GetMapping("/enabledDisabled/{id}/{estado}")
+    public String enabledDisabledCategoria(@PathVariable("id") Integer id,@PathVariable("estado") Boolean estado, Model model) {
+    	String mensajeAlert = "";
+    	if(estado == true) {
+            categoriaService.eliminar(id,true,false);
+            mensajeAlert = "?mensajeAlert=Categoria habilitado.";
+    	}
+    	else {
+    		categoriaService.eliminar(id,false,true);
+            mensajeAlert = "?mensajeAlert=Categoria deshabilitado.";
+    	}
+    		
+        return list_redirect+ mensajeAlert;
+    }
     @GetMapping("/delete/{id}")
     public String deleteCategoria(@PathVariable("id") Integer id, Model model) {
-        categoriaService.eliminar(id,false);
+        categoriaService.delete(id);
     
-        return list_redirect;
+        return list_redirect+ "?mensajeAlert=Categoria eliminado.";
     }
 
     @GetMapping("/listar")
-    public String listCategoria(@RequestParam(defaultValue = "0") int pagina,Model model) {
+    public String listCategoria(@RequestParam(defaultValue = "0") int pagina,Model model,
+    		@RequestParam(required = false) String mensajeAlert,
+    		@RequestParam(required = false) String mensajeError) {
     	int tamanoPagina = 5;
     	List<Categoria> listaCategorias = categoriaService.listarCategorias();
         int totalCategorias = listaCategorias.size();
@@ -86,6 +136,8 @@ public class CategoriaController {
         model.addAttribute("categorias", paginaCategorias);
         model.addAttribute("paginaActual", pagina);
         model.addAttribute("totalPaginas", (totalCategorias + tamanoPagina - 1) / tamanoPagina);
+        model.addAttribute("mensajeAlert",mensajeAlert);
+        model.addAttribute("mensajeError",mensajeError);
         
 
         return list_template;

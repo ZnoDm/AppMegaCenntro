@@ -14,21 +14,30 @@
 		<div class="card">
 			<div class="card-header"> <h3>Detalle producto</h3></div>
 			<div class="card-body">
-				<form th:action="@{/producto/save}" th:object="${producto}" method="post" class="form-horizontal">
+				<form th:action="@{/producto/edit}" th:object="${producto}" method="post" class="form-horizontal">
                     <div class="box-body row">
                     	<div class="col-12 col-lg-6">
 	                    	<div class="row">
+                                <input type="hidden" name="id" th:field="*{id}">
+                                <div class="form-group col-12 col-lg-6">
+		                            <label class="control-label">Codigo</label>
+		                            <div>
+		                                <input type="text" class="form-control" name="codigo" th:field="*{codigo}" />
+		                                <p class="text-danger d-block" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></p>
+		                            </div>
+		                        </div>
+
 		                    	<div class="form-group col-12">
 		                            <label class="control-label">Nombre</label>
 		                            <div>
-		                                <input type="text" class="form-control"  th:field="*{nombreProducto}" />
+		                                <input type="text" class="form-control" name="nombreProducto" th:field="*{nombreProducto}" />
 		                                <p class="text-danger d-block" th:if="${#fields.hasErrors('nombreProducto')}" th:errors="*{nombreProducto}"></p>
 		                            </div>
 		                        </div>
 								<div class="form-group col-12">
 		                            <label class="control-label">Descripcion</label>
 		                            <div>
-		                                <input type="text" class="form-control"  th:field="*{descripcionProducto}" />
+		                                <input type="text" class="form-control" name="descripcionProducto"  th:field="*{descripcionProducto}" />
 		                                <p class="text-danger d-block" th:if="${#fields.hasErrors('descripcionProducto')}" th:errors="*{descripcionProducto}"></p>
 		                            </div>
 		                        </div>
@@ -36,25 +45,34 @@
 		                        <div class="form-group col-12 col-lg-6">
 		                            <label class="control-label">Modelo</label>
 		                            <div>
-		                                <input type="text" class="form-control"  th:field="*{modelo}" />
+		                                <input type="text" class="form-control" name="modelo" th:field="*{modelo}" />
 		                                <p class="text-danger d-block" th:if="${#fields.hasErrors('modelo')}" th:errors="*{modelo}"></p>
 		                            </div>
 		                        </div>
 		                        <div class="form-group col-12 col-lg-6">
 		                            <label class="control-label">Marca</label>
 		                            <div>
-		                                <input type="text" class="form-control"  th:field="*{marca}" />
+		                                <input type="text" class="form-control" name="marca" th:field="*{marca}" />
 		                                <p class="text-danger d-block" th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}"></p>
 		                            </div>
 		                        </div>
 		                        
-		                        <div class="form-group col-12">
+		                        <div class="form-group col-12 col-lg-6">
 		                            <label class="control-label">Stock</label>
 		                            <div>
-		                                <input type="number" class="form-control"  th:field="*{stock}" />
+		                                <input type="text" class="form-control" name="stock"  th:field="*{stock}" />
 		                                <p class="text-danger d-block" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></p>
 		                            </div>
 		                        </div>
+
+                                <div class="form-group col-12 col-lg-6">
+		                            <label class="control-label">Precio Unitario</label>
+		                            <div>
+		                                <input type="text" class="form-control" name="precioUnitario" th:field="*{precioUnitario}" />
+		                                <p class="text-danger d-block" th:if="${#fields.hasErrors('precioUnitario')}" th:errors="*{precioUnitario}"></p>
+		                            </div>
+		                        </div>
+                                <input type="hidden" class="form-control" id="urlImagen" name="urlImagen" th:field="*{urlImagen}" />
                          
 		                        <div class="form-group col-12">
 		                        	<label class="control-label">Activo</label>
@@ -75,7 +93,7 @@
 			                        </div>
                         			<div class="text-center p-5">
 		                        		<img alt="imagen preliminar" id="img-src" class="img-fluid p-5" 
-		                        		src="https://firebasestorage.googleapis.com/v0/b/nelsontest-e2954.appspot.com/o/megacentro%2Fsin-imagen.webp?alt=media&token=c2f898b5-6aa0-4a2d-b6b2-155826879a84">
+		                        		th:src="@{${producto.urlImagen}}" >
 		                        	</div>
 		                        	 <div class="custom-file">
 			                            <input type="file" class="custom-file-input" id="inputFile">
@@ -104,7 +122,21 @@
 
 	</div>
 	
+	
 	<th:block layout:fragment="script">
+	 <script>
+	    	var mensajeError = "[[${mensajeError}]]";
+			if(mensajeError){
+		    	Swal.fire({
+		    		position: 'center',
+		            icon: 'error',
+		            title: 'Error...',
+		            showConfirmButton: false,
+		            text: mensajeError,
+		            timer: 1500
+			  	})
+		  	}
+	  </script>
      <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";        
@@ -175,6 +207,7 @@
                         imagen.classList.remove("d-none");
                         console.log('File Updated ', downloadURL);
                         imagen.setAttribute('src',downloadURL); 
+                        document.getElementById('urlImagen').value = downloadURL;
                     });
                 }
             );

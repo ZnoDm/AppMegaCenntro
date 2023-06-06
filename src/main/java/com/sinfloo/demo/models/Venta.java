@@ -4,8 +4,10 @@ import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name="venta")
 public class Venta {
@@ -17,14 +19,20 @@ public class Venta {
     private String codigo;
     private int correlativo;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trabajador_id")
     private Trabajador trabajador;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
-
+    
+    
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "venta_id")
+	private List<DetalleVenta> items;
+    
+    
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date fechaEmision;
 
@@ -36,9 +44,6 @@ public class Venta {
     private String estado;
     private Float tasaCambio;
 
-    private Float subtotal;
-    private Float descuento;
-    private Float total;
 
 	private Boolean activo;
 	private Boolean eliminado;
@@ -53,7 +58,9 @@ public class Venta {
 	private String usuarioEliminacion;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date fechaEliminacion;
+	
     public Venta() {
+    	this.items = new ArrayList<DetalleVenta>();
     }
     public int getId() {
         return id;
@@ -121,24 +128,7 @@ public class Venta {
     public void setTasaCambio(Float tasaCambio) {
         this.tasaCambio = tasaCambio;
     }
-    public Float getSubtotal() {
-        return subtotal;
-    }
-    public void setSubtotal(Float subtotal) {
-        this.subtotal = subtotal;
-    }
-    public Float getDescuento() {
-        return descuento;
-    }
-    public void setDescuento(Float descuento) {
-        this.descuento = descuento;
-    }
-    public Float getTotal() {
-        return total;
-    }
-    public void setTotal(Float total) {
-        this.total = total;
-    }
+    
     public Boolean getActivo() {
         return activo;
     }
@@ -187,6 +177,39 @@ public class Venta {
     public void setFechaEliminacion(Date fechaEliminacion) {
         this.fechaEliminacion = fechaEliminacion;
     }
+    
+	public List<DetalleVenta> getItems() {
+		return items;
+	}
+	public void setItems(List<DetalleVenta> items) {
+		this.items = items;
+	}
+	
+	public void addItemDetalleVenta(DetalleVenta item) {
+		this.items.add(item);
+	}
+	
+	public Double getTotalDescuento() {
+		Double total = 0.0;
+
+		int size = items.size();
+
+		for (int i = 0; i < size; i++) {
+			total += items.get(i).calcularImporteDescuento();
+		}
+		return total;
+	}
+	
+	public Double getTotal() {
+		Double total = 0.0;
+
+		int size = items.size();
+
+		for (int i = 0; i < size; i++) {
+			total += items.get(i).calcularImporteTotal();
+		}
+		return total;
+	}
 
 
 }

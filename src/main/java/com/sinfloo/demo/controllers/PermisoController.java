@@ -1,9 +1,6 @@
 package com.sinfloo.demo.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import java.util.*;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.sinfloo.demo.enums.PermisoNombre;
 import com.sinfloo.demo.models.Permiso;
-import com.sinfloo.demo.models.Permiso;
-import com.sinfloo.demo.services.PermisoService;
 import com.sinfloo.demo.services.PermisoService;
 
 @Controller
@@ -36,7 +30,6 @@ public class PermisoController {
     
     private String edit_template ="/admin/permiso/editar";
    	private String add_template ="/admin/permiso/nuevo";
-   	private String list_template ="/admin/permiso/listar";
    	private String list_redirect ="redirect:/permiso/listar";
        
     @GetMapping("/add")
@@ -50,28 +43,35 @@ public class PermisoController {
 	@PostMapping("/save")
     public String savePermiso(@Valid @ModelAttribute("permiso") Permiso permiso, 
     		BindingResult result, Model model){
-
-        if(result.hasErrors()){
+		
+		if(result.hasErrors()){
+        	model.addAttribute("mensajeError","Llene todos los campos");
             return add_template;
+        }
+        if(permisoService.existsByNombrePermiso(permiso.getNombrePermiso())) {
+        	model.addAttribute("mensajeError","El Permiso ya existe");
+        	return add_template;
         }
         System.out.println(result.hasErrors());
         permisoService.save(permiso);
-        return list_redirect;
+        return list_redirect+ "?mensajeAlert=Permiso creado.";
     }
 	 
 	@PostMapping("/editar")
     public String editarPermiso(@Valid @ModelAttribute("permiso") Permiso permiso, 
     		BindingResult result, Model model){
 
-        if(result.hasErrors()){
+		 if(result.hasErrors()){
+        	model.addAttribute("mensajeError","Llene todos los campos");
             return edit_template;
         }
-        if(permisoService.existsByNombrePermiso(permiso.getNombrePermiso())) {
-        	 return edit_template;
+        if(permisoService.getByNombrePermiso(permiso.getNombrePermiso()).get().getId() != permiso.getId() ) {
+        	model.addAttribute("mensajeError","El Permiso ya existe");
+        	return edit_template;
         }
         System.out.println(result.hasErrors());
         permisoService.save(permiso);
-        return list_redirect;
+        return list_redirect+ "?mensajeAlert=Permiso actualizado.";
     }
 	 
 	@GetMapping("/edit/{id}")
@@ -85,11 +85,11 @@ public class PermisoController {
 	@GetMapping("/delete/{id}")
     public String deletePermiso(@PathVariable("id") Integer id, Model model) {
 	 	permisoService.delete(id);
-       return list_redirect;
+       return list_redirect+ "?mensajeAlert=Permiso eliminado.";
     }
 	
     @GetMapping("/listar")
-    public String listarPermisos(@RequestParam(defaultValue = "0") int pagina,Model model) {
+    public String listarPermisos(@RequestParam(defaultValue = "0") int pagina,Model model,@RequestParam(required = false) String mensajeAlert) {
     	int tamanoPagina = 5;    	
     	List<Permiso> permisos = permisoService.listarPermisos();
 
@@ -103,7 +103,7 @@ public class PermisoController {
         model.addAttribute("permisos", paginaPermisos);
         model.addAttribute("paginaActual", pagina);
         model.addAttribute("totalPaginas", (totalPermisos + tamanoPagina - 1) / tamanoPagina);
-
+        model.addAttribute("mensajeAlert",mensajeAlert);
         return "/admin/permiso/listar";
     }
 

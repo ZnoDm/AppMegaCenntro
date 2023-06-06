@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import com.sinfloo.demo.models.*;
 
 public interface TrabajadorRepository extends JpaRepository<Trabajador, Integer>{
-	
+	Trabajador findByUsuario(Usuario usuario);
 	 // Método para buscar una Trabajador por su id
     Trabajador findById(int id);
 
@@ -25,6 +25,6 @@ public interface TrabajadorRepository extends JpaRepository<Trabajador, Integer>
     
     
     @Modifying
-    @Query("UPDATE Trabajador e SET e.eliminado = :eliminado WHERE e.id = :id")
-    void eliminar(@Param("id") Integer id, @Param("eliminado") Boolean eliminado);
+    @Query("UPDATE Trabajador e SET e.activo = :activo, e.eliminado = :eliminado WHERE e.id = :id")
+    void eliminar(@Param("id") Integer id, @Param("activo") Boolean activo,@Param("eliminado") Boolean eliminado);
 }

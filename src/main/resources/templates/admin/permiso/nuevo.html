@@ -11,9 +11,8 @@
 		<div class="card">
 			<div class="card-header"> <h3>Detalle permiso</h3></div>
 			<div class="card-body">
-				<form th:action="@{/permiso/editar}" th:object="${permiso}" method="post" class="form-horizontal">
+				<form th:action="@{/permiso/save}" th:object="${permiso}" method="post" class="form-horizontal">
                     <div class="box-body row">
-                    	<input type="hidden" th:field="*{id}">
                         <div class="form-group col-12">
                             <label class="contpermiso-label">Nombre</label>
                             <div>
@@ -40,8 +39,19 @@
 	
 	<th:block layout:fragment="script">
     <script>
+    	var mensajeError = "[[${mensajeError}]]";
+			if(mensajeError){
+		    	Swal.fire({
+		    		position: 'center',
+		            icon: 'error',
+		            title: 'Error...',
+		            showConfirmButton: false,
+		            text: mensajeError,
+		            timer: 1500
+			  	})
+		  	}
     </script>
-</th:block>
+	</th:block>
 
 </body>				
 	   

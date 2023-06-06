@@ -13,7 +13,8 @@
 			<div class="card-body">
 				<form th:action="@{/usuario/editar}" th:object="${usuarioform}" method="post" class="form-horizontal">
                     <div class="box-body row">
-						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{id}">						
+                    	<input type="hidden" th:field="*{password}" />
                         <div class="form-group col-12 col-lg-6">
                             <label class="control-label">Nombre</label>
                             <div>
@@ -49,8 +50,19 @@
 	
 	<th:block layout:fragment="script">
     <script>
+    	var mensajeError = "[[${mensajeError}]]";
+		if(mensajeError){
+	    	Swal.fire({
+	    		position: 'center',
+	            icon: 'error',
+	            title: 'Error...',
+	            showConfirmButton: false,
+	            text: mensajeError,
+	            timer: 1500
+		  	})
+	  	}
     </script>
-</th:block>
+	</th:block>
 
 </body>				
 	   

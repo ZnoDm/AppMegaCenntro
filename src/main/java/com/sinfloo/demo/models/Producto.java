@@ -33,9 +33,10 @@ public class Producto {
     private Integer stock;
     
     @NotNull
-    private double precioUnitario;
+    private Double precioUnitario;
     
     @NotNull
+    @Column(length = 1000)
     private String urlImagen;
     
 	private Boolean activo;
@@ -132,11 +133,11 @@ public class Producto {
 		this.stock = stock;
 	}
 
-	public double getPrecioUnitario() {
+	public Double getPrecioUnitario() {
 		return precioUnitario;
 	}
 
-	public void setPrecioUnitario(double precioUnitario) {
+	public void setPrecioUnitario(Double precioUnitario) {
 		this.precioUnitario = precioUnitario;
 	}
 

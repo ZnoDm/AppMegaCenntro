@@ -19,8 +19,6 @@ public class Cliente {
 	@NotNull
 	private String nombres;
 	
-	@NotNull
-	private String apellidos;
 	
 	
 	private String direccion;
@@ -31,12 +29,10 @@ public class Cliente {
 	@Enumerated(EnumType.STRING)
     private TipoDocumento tipoDocumentoIdentidad;
 
-	
     private String documentoIdentidad;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Venta> ventas;
-
 	
 	private Boolean activo;
 	private Boolean eliminado;
@@ -83,17 +79,6 @@ public class Cliente {
 		this.nombres = nombres;
 	}
 
-
-
-	public String getApellidos() {
-		return apellidos;
-	}
-
-
-
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
 
 
 

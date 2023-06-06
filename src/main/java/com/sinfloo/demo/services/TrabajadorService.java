@@ -8,12 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sinfloo.demo.models.Trabajador;
-import com.sinfloo.demo.repositories.TrabajadorRepository;
+import com.sinfloo.demo.models.Usuario;
+import com.sinfloo.demo.repositories.*;
 
 
 @Service
 @Transactional
 public class TrabajadorService {
+	@Autowired
+	UsuarioRepository usuarioRepository;
 	@Autowired
 	TrabajadorRepository trabajadorRepository;
 
@@ -31,9 +34,19 @@ public class TrabajadorService {
 	public Trabajador get(Integer  id) {
         return trabajadorRepository.findById(id).get();
     }
-	public void eliminar(Integer id, Boolean eliminado) {
-		trabajadorRepository.eliminar(id, eliminado);
+	
+	public Trabajador getByUsuario(Usuario usuario) {
+        return trabajadorRepository.findByUsuario(usuario);
     }
 	
+	public void eliminar(Integer id, Boolean activo, Boolean eliminado) {
+		trabajadorRepository.eliminar(id, activo,eliminado);
+    }
+	public void delete (Integer id) {
+		Trabajador trabajador = trabajadorRepository.findById(id).orElse(null);
+        if (trabajador != null) {
+        	trabajadorRepository.delete(trabajador);
+        }
+	}
 	
 }
