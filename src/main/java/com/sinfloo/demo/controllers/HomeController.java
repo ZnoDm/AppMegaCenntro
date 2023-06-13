@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.lang.String;
 @Controller
-@RequestMapping("")
+@RequestMapping("/")
 public class HomeController {
 	@GetMapping({"/index", "/", "/home"})
     public String home(@AuthenticationPrincipal UserDetails userDetails){

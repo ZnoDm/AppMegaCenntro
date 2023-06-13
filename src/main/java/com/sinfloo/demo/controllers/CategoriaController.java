@@ -28,15 +28,15 @@ import com.sinfloo.demo.services.CategoriaService;
 
 
 @Controller
-@RequestMapping("categoria")
+@RequestMapping("/categoria")
 public class CategoriaController {
 	
 	@Autowired
 	CategoriaService categoriaService;
 	
-	private String edit_template ="/admin/categoria/editar";
-	private String add_template ="/admin/categoria/nuevo";
-    private String list_template ="/admin/categoria/listar";
+	private String edit_template ="admin/categoria/editar";
+	private String add_template ="admin/categoria/nuevo";
+    private String list_template ="admin/categoria/listar";
     private String list_redirect ="redirect:/categoria/listar";
 	    
 	@GetMapping("/add")

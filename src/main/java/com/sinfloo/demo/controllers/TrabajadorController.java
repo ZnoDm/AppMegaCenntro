@@ -24,15 +24,15 @@ import com.sinfloo.demo.services.TrabajadorService;
 
 
 @Controller
-@RequestMapping("trabajador")
+@RequestMapping("/trabajador")
 public class TrabajadorController {
 	
 	@Autowired
 	TrabajadorService trabajadorService;
 	
-	private String edit_template ="/admin/trabajador/editar";
-	private String add_template ="/admin/trabajador/nuevo";
-    private String list_template ="/admin/trabajador/listar";
+	private String edit_template ="admin/trabajador/editar";
+	private String add_template ="admin/trabajador/nuevo";
+    private String list_template ="admin/trabajador/listar";
     private String list_redirect ="redirect:/trabajador/listar";
 	    
 	@GetMapping("/add")

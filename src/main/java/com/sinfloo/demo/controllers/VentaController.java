@@ -28,7 +28,7 @@ import com.sinfloo.demo.services.*;
 
 
 @Controller
-@RequestMapping("venta")
+@RequestMapping("/venta")
 public class VentaController {
 	
 	@Autowired
@@ -43,9 +43,9 @@ public class VentaController {
 	@Autowired
     UsuarioService usuarioService;
 	
-	private String edit_template ="/admin/venta/editar";
-	private String add_template ="/admin/venta/nuevo";
-    private String list_template ="/admin/venta/listar";
+	private String edit_template ="admin/venta/editar";
+	private String add_template ="admin/venta/nuevo";
+    private String list_template ="admin/venta/listar";
     private String list_redirect ="redirect:/venta/listar";
 	    
 	@GetMapping("/add")
