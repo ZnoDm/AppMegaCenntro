@@ -28,7 +28,7 @@ import com.sinfloo.demo.services.*;
 
 
 @Controller
-@RequestMapping("/venta")
+@RequestMapping("venta")
 public class VentaController {
 	
 	@Autowired

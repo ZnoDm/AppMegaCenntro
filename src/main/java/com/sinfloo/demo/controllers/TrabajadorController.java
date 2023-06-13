@@ -24,7 +24,7 @@ import com.sinfloo.demo.services.TrabajadorService;
 
 
 @Controller
-@RequestMapping("/trabajador")
+@RequestMapping("trabajador")
 public class TrabajadorController {
 	
 	@Autowired

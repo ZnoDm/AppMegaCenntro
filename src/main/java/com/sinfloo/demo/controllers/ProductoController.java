@@ -27,7 +27,7 @@ import com.sinfloo.demo.services.ProductoService;
 
 
 @Controller
-@RequestMapping("/producto")
+@RequestMapping("producto")
 public class ProductoController {
 	
 	@Autowired

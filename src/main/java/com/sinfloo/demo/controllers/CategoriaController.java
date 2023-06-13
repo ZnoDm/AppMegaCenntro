@@ -28,7 +28,7 @@ import com.sinfloo.demo.services.CategoriaService;
 
 
 @Controller
-@RequestMapping("/categoria")
+@RequestMapping("categoria")
 public class CategoriaController {
 	
 	@Autowired

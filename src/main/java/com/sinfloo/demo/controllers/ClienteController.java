@@ -25,7 +25,7 @@ import org.json.simple.parser.ParseException;
 
 
 @Controller
-@RequestMapping("/cliente")
+@RequestMapping("cliente")
 public class ClienteController {
 	
 	@Autowired

@@ -35,7 +35,7 @@ import java.util.Set;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/usuario")
+@RequestMapping("usuario")
 public class UsuarioController {
 
     @Autowired

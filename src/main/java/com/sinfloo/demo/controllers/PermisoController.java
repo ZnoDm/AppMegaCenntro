@@ -21,7 +21,7 @@ import com.sinfloo.demo.models.Permiso;
 import com.sinfloo.demo.services.PermisoService;
 
 @Controller
-@RequestMapping("/permiso")
+@RequestMapping("permiso")
 public class PermisoController {
 
 	@Autowired

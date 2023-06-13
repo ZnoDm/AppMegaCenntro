@@ -11,7 +11,7 @@ import com.sinfloo.demo.models.*;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	
-	 // Método para buscar una Cliente por su id
+	// Método para buscar una Cliente por su id
     Cliente findById(int id);
 
     // Método para guardar una Cliente en la base de datos

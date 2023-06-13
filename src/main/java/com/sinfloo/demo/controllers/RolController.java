@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 
 @Controller
-@RequestMapping("/rol")
+@RequestMapping("rol")
 public class RolController {
 
     @Autowired

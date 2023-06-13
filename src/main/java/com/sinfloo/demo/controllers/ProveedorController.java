@@ -17,7 +17,7 @@ import com.sinfloo.demo.services.ProveedorService;
 
 
 @Controller
-@RequestMapping("/proveedor")
+@RequestMapping("proveedor")
 public class ProveedorController {
 	
 	@Autowired
