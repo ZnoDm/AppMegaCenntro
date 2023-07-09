@@ -1,21 +1,17 @@
 package com.sinfloo.demo.models;
-import java.text.DecimalFormat;
 import java.util.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.sinfloo.demo.enums.EstadoVenta;
 
 @Entity
-@Table(name="venta")
-public class Venta {
-
-    @Id
+public class NotaEntrada {
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
@@ -27,33 +23,24 @@ public class Venta {
     private Trabajador trabajador;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    @JoinColumn(name = "proveedor_id")
+    private Proveedor proveedor;
     
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "venta_id")
-	private List<DetalleVenta> items;
+	@JoinColumn(name = "notaentrada_id")
+	private List<DetalleNotaEntrada> items;
     
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date fechaEmision;
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date fechaEntrega;
+    private Date fechaRecepcion;
 
     private String tipoDocumento;
-    private String tipoMoneda;
     
     @Enumerated(EnumType.STRING)
     private EstadoVenta estado;
-    private Float tasaCambio;
 
-    
-    @OneToOne(mappedBy = "venta", cascade = CascadeType.ALL)
-    private NotaSalida notasalida;
-    
-    
+
 	private String usuarioRegistro;
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -69,8 +56,8 @@ public class Venta {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date fechaEliminacion;
 	
-    public Venta() {
-    	this.items = new ArrayList<DetalleVenta>();
+    public NotaEntrada() {
+    	this.items = new ArrayList<DetalleNotaEntrada>();
     }
     public int getId() {
         return id;
@@ -96,48 +83,21 @@ public class Venta {
     public void setTrabajador(Trabajador trabajador) {
         this.trabajador = trabajador;
     }
-    public Cliente getCliente() {
-        return cliente;
-    }
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-    public Date getFechaEmision() {
-        return fechaEmision;
-    }
-    public void setFechaEmision(Date fechaEmision) {
-        this.fechaEmision = fechaEmision;
-    }
-    public Date getFechaEntrega() {
-        return fechaEntrega;
-    }
-    public void setFechaEntrega(Date fechaEntrega) {
-        this.fechaEntrega = fechaEntrega;
-    }
+  
     public String getTipoDocumento() {
         return tipoDocumento;
     }
     public void setTipoDocumento(String tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
-    public String getTipoMoneda() {
-        return tipoMoneda;
-    }
-    public void setTipoMoneda(String tipoMoneda) {
-        this.tipoMoneda = tipoMoneda;
-    }
+   
     public EstadoVenta getEstado() {
         return estado;
     }
     public void setEstado(EstadoVenta estado) {
         this.estado = estado;
     }
-    public Float getTasaCambio() {
-        return tasaCambio;
-    }
-    public void setTasaCambio(Float tasaCambio) {
-        this.tasaCambio = tasaCambio;
-    }
+   
     
     public String getUsuarioRegistro() {
         return usuarioRegistro;
@@ -176,48 +136,28 @@ public class Venta {
         this.fechaEliminacion = fechaEliminacion;
     }
     
-	public List<DetalleVenta> getItems() {
+	public List<DetalleNotaEntrada> getItems() {
 		return items;
 	}
-	public void setItems(List<DetalleVenta> items) {
+	public void setItems(List<DetalleNotaEntrada> items) {
 		this.items = items;
 	}
 	
-	public void addItemDetalleVenta(DetalleVenta item) {
+	public void addItemDetalleNotaEntrada(DetalleNotaEntrada item) {
 		this.items.add(item);
 	}
-	
-	public Double getTotalDescuento() {
-		Double total = 0.0;
-
-		int size = items.size();
-
-		for (int i = 0; i < size; i++) {
-			total += items.get(i).calcularImporteDescuento();
-		}
-		return redondearDecimales(total, 2);
-	}
-  public static double redondearDecimales(double valor, int decimales) {
-        DecimalFormat df = new DecimalFormat("#." + "0".repeat(decimales));
-        String valorFormateado = df.format(valor);
-        return Double.parseDouble(valorFormateado);
+    public Proveedor getProveedor() {
+        return proveedor;
     }
-	public Double getTotal() {
-		Double total = 0.0;
-
-		int size = items.size();
-
-		for (int i = 0; i < size; i++) {
-			total += items.get(i).calcularImporteTotal();
-		}
-		return redondearDecimales(total, 2);
-	}
-	public NotaSalida getNotasalida() {
-		return notasalida;
-	}
-	public void setNotasalida(NotaSalida notasalida) {
-		this.notasalida = notasalida;
-	}
-
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
+    }
+    public Date getFechaRecepcion() {
+        return fechaRecepcion;
+    }
+    public void setFechaRecepcion(Date fechaRecepcion) {
+        this.fechaRecepcion = fechaRecepcion;
+    }
+	
 
 }

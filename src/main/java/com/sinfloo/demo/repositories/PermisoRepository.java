@@ -13,7 +13,8 @@ import com.sinfloo.demo.models.Permiso;
 @Repository
 public interface PermisoRepository extends JpaRepository<Permiso, Integer>{
 	
-	Optional<Permiso> findByNombrePermiso(String nombrePermiso);
 	
 	boolean existsByNombrePermiso(String nombrePermiso);
+	
+	Optional<Permiso> findByNombrePermiso(String nombrePermiso);
 }

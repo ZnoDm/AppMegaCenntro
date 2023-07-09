@@ -23,8 +23,15 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer>{
     // Método para buscar todas las Proveedors por un atributo específico (Ejemplo: nombre)
     //List<Proveedor> findByNombre(String nombre);
     
+    boolean existsByDocumentoIdentidad(String documentoIdentidad);
     
     @Modifying
-    @Query("UPDATE Proveedor e SET e.eliminado = :eliminado WHERE e.id = :id")
-    void eliminar(@Param("id") Integer id, @Param("eliminado") Boolean eliminado);
+    @Query("select p from Proveedor p where p.documentoIdentidad like %:term%")
+    List<Proveedor> listarByDocumentoIdentidad(@Param("term") String term);
+    
+   	Optional<Proveedor> findByDocumentoIdentidad(String documentoIdentidad);
+   	
+    @Modifying
+    @Query("UPDATE Proveedor e SET e.activo = :activo, e.eliminado = :eliminado WHERE e.id = :id")
+    void eliminar(@Param("id") Integer id, @Param("activo") Boolean activo,@Param("eliminado") Boolean eliminado);
 }

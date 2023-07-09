@@ -118,12 +118,14 @@ public class UsuarioController {
         
 	        
         Usuario usuario = usuarioService.get(usuarioform.getId());
+        if(usuarioService.existsByNombreUsuario(usuarioform.getNombreUsuario())) {
         System.out.println(usuarioService.getByNombreUsuario(usuarioform.getNombreUsuario()).get().getId());
         if(usuarioService.getByNombreUsuario(usuarioform.getNombreUsuario()).get().getId() != usuarioform.getId()) {
         	model.addAttribute("mensajeError","El Usuario ya existe");
         	List<Rol> roles = rolService.listarRoles();
 			model.addAttribute("roles",roles);
 			return edit_template;
+        }
         }
         
         

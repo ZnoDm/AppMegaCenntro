@@ -31,7 +31,8 @@ public class CreateRoles implements CommandLineRunner {
     
     @Autowired
     ClienteService clienteService; 
-    
+    @Autowired
+    ProveedorService proveedorService; 
     @Autowired
     ProductoService productoService;
     
@@ -43,7 +44,7 @@ public class CreateRoles implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-    	
+    	/*
     	Rol rolAdmin1 = new Rol(RolNombre.ROLE_ADMIN.toString());
         Rol rolUser1 = new Rol(RolNombre.ROLE_USER.toString());
         rolService.save(rolAdmin1);
@@ -80,15 +81,11 @@ public class CreateRoles implements CommandLineRunner {
         Categoria categoria = new Categoria();
         categoria.setNombreCategoria("Polos");
         categoria.setDescripcionCategoria("Polos");
-        categoria.setActivo(true);
-        categoria.setEliminado(false);
         categoriaService.save(categoria);
         
         Categoria categoria2 = new Categoria();
         categoria2.setNombreCategoria("Perfumes");
         categoria2.setDescripcionCategoria("Perfumes");
-        categoria2.setActivo(true);
-        categoria2.setEliminado(false);
         categoriaService.save(categoria2);
         
         
@@ -113,6 +110,12 @@ public class CreateRoles implements CommandLineRunner {
        cliente.setTipoDocumentoIdentidad(TipoDocumento.DNI);
        cliente.setDocumentoIdentidad("70671747");
         clienteService.save(cliente);
+        
+        Proveedor proveedor = new Proveedor();
+        proveedor.setNombres("Addidas LP ");
+        proveedor.setTipoDocumentoIdentidad(TipoDocumento.RUC);
+        proveedor.setDocumentoIdentidad("2580147399");
+        proveedorService.save(proveedor);
         
         
         Producto producto = new Producto();       
@@ -141,6 +144,6 @@ public class CreateRoles implements CommandLineRunner {
         producto2.setCategoria(categoria2);
         producto2.setActivo(true);
         producto2.setEliminado(false);
-        productoService.save(producto2);
+        productoService.save(producto2);*/
     }
 }

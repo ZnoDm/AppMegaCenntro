@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout">
 <head>
-    <title>Listar Ventas</title>
+    <title>Listar Nota de Entradas</title>
 	<th:block layout:fragment="styles">
     <link rel="stylesheet" th:href="@{/admin/static/css/switch.css}">
     </th:block>
@@ -14,88 +14,79 @@
 	<!-- CONTENIDO -->
 	<div class="card">
 		<div class="card-header">
-			<h3 class="card-title">LISTAR VENTAS</h3>
+			<h3 class="card-title">LISTAR ENTRADAS</h3>
 		 	<div class="d-flex justify-content-end">
-				<a type="button" class="btn btn-secondary ml-auto" th:href="@{/venta/add}">Nueva Venta</a>
+				<a type="button" class="btn btn-secondary ml-auto" th:href="@{/notaentrada/add}">Nueva Nota de Entrada</a>
 			</div>
 		</div>
 		<hr>
 		<div class="card-body table-responsive">
-			<div th:if="${ventas.content.size()==0}">No hay ventas en lista</div>
-			<table class="table table-hover" th:if="${ventas.content.size()>0}">
+			<div th:if="${notaentradas.content.size()==0}">No hay notas de entradas en lista</div>
+			<table class="table table-hover" th:if="${notaentradas.content.size()>0}">
 				<thead class="text-primary">
 					<tr>
 						<th>Nro</th>
 						<th>Acciones</th>						
 						<th>Estado</th>
+						<th>Codigo</th>
 						<th>Documento</th>
 						
-						<th>Cliente</th>
-						<th>Moneda</th>
-						<th>Sub Total</th>
-						<th>Total</th>
+						<th>Proveedor</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="venta, contador : ${ventas.content}">
+					<tr th:each="notaentrada, contador : ${notaentradas.content}">
 						<td th:text="${contador.count}"></td> 
 						<td>
 							<div class="d-flex align-items-center">
-								<a th:if="${venta.estado.name() == 'ABIERTO'}"  th:href="@{'/venta/edit/' + ${venta.id}}" class="btn btn-outline-primary mr-2 mb-0 p-1 d-flex alig-items-center">
+								<a th:if="${notaentrada.estado.name() == 'ABIERTO'}"  th:href="@{'/notaentrada/edit/' + ${notaentrada.id}}" class="btn btn-outline-primary mr-2 mb-0 p-1 d-flex alig-items-center">
 									<i class="material-icons md-18">
 										edit
 									</i>
 								</a>
-								<a th:if="${venta.estado.name() == 'ANULADO' || venta.estado.name() == 'CERRADO'}"   
-								th:href="@{'/venta/ver/' + ${venta.id}}" 
+								<a th:if="${notaentrada.estado.name() == 'ANULADO' || notaentrada.estado.name() == 'CERRADO'}"   
+								th:href="@{'/notaentrada/ver/' + ${notaentrada.id}}" 
 								class="btn btn-outline-success mr-2 mb-0 p-1 d-flex alig-items-center">
 									<i class="material-icons md-18">
 										visibility
 									</i>
 								</a>
-								<a th:if="${venta.estado.name() == 'ABIERTO'}" 
-								th:href="@{'/venta/anular/' + ${venta.id}}" class="btn btn-danger mr-2 mb-0 p-1 d-flex alig-items-center">
-									<i class="material-icons md-18">
-									folder_delete
-									</i>
-								</a>
-								<a th:if="${venta.estado.name() == 'CERRADO'}"  th:href="@{'/pdf/' + ${venta.id}}" class="btn btn-danger mr-2 mb-0 p-1 d-flex alig-items-center">
-									<i class="material-icons md-18">
-									picture_as_pdf
+								<a th:if="${notaentrada.estado.name() == 'CERRADO'}" 
+								th:href="@{'/notaentrada/abrir/' + ${notaentrada.id}}" class="btn btn-warning mr-2 mb-0 p-1 d-flex alig-items-center">
+									<i class="material-icons md-18" style="width: 24px;">
+									lock_open_right
 									</i>
 								</a>
 							</div>
 						</td>
 						<td>
-							<div th:if="${venta.estado.name() == 'ABIERTO'}" 
+							<div th:if="${notaentrada.estado.name() == 'ABIERTO'}" 
 							style="border-radius: 8px;padding: 4px 10px;background:#2FBC6C;color: #fff;width: max-content;">
 							ABIERTO</div>
-							<div th:if="${venta.estado.name() == 'CERRADO'}" 
+							<div th:if="${notaentrada.estado.name() == 'CERRADO'}" 
 							style="border-radius: 8px;padding: 4px 10px;background:#FDAA0C;color: #000;width: max-content;">
 							CERRADO</div>
-							<div th:if="${venta.estado.name() == 'ANULADO'}" 
+							<div th:if="${notaentrada.estado.name() == 'ANULADO'}" 
 							style="border-radius: 8px;padding: 4px 10px;background:#EB011B;color: #fff;width: max-content;">
 							ANULADO</div>
 						</td>
-						<td th:text="${venta.tipoDocumento}"></td>
-						<td th:text="${venta.cliente.nombres}"></td>
-						<td th:text="${venta.tipoMoneda}"></td>
-						<td th:text="${venta.getTotal}"></td>
+						<td th:text="${notaentrada.codigo}"></td>
+						<td th:text="${notaentrada.tipoDocumento}"></td>
+						<td th:text="${notaentrada.proveedor.documentoIdentidad + ' ' + notaentrada.proveedor.nombres}"></td>
 
-						<td th:text="${venta.getTotalDescuento}"></td>
 					</tr>
 				</tbody>
 			</table>
 			<nav th:if="${totalPaginas > 1}">
 			    <ul class="pagination justify-content-center">
 			        <li th:classappend="${paginaActual == 0} ? 'disabled page-item'">
-			            <a class="page-link" th:href="@{/venta/listar/(pagina=0)}">&laquo;</a>
+			            <a class="page-link" th:href="@{/notaentrada/listar/(pagina=0)}">&laquo;</a>
 			        </li>
 			        <li th:classappend="${paginaActual == pagina} ? 'active page-item'" th:each="pagina : ${#numbers.sequence(0, totalPaginas-1)}">
-			            <a class="page-link" th:href="@{/venta/listar/(pagina=${pagina})}" th:text="${pagina + 1}"></a>
+			            <a class="page-link" th:href="@{/notaentrada/listar/(pagina=${pagina})}" th:text="${pagina + 1}"></a>
 			        </li>
 			        <li th:classappend="${paginaActual == totalPaginas-1} ? 'disabled page-item'">
-			            <a class="page-link" th:href="@{/venta/listar/(pagina=${totalPaginas-1})}">&raquo;</a>
+			            <a class="page-link" th:href="@{/notaentrada/listar/(pagina=${totalPaginas-1})}">&raquo;</a>
 			        </li>
 			    </ul>
 			</nav>

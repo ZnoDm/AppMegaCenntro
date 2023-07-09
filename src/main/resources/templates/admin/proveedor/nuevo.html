@@ -17,7 +17,7 @@
 				<form th:action="@{/proveedor/save}" th:object="${proveedor}" method="post" class="form-horizontal">
                     <div class="box-body row">
                     
-                        <div class="form-group col-12">
+                       <div class="form-group col-12">
                             <label class="control-label">Nombres</label>
                             <div>
                                 <input type="text" class="form-control" name="nombres" th:field="*{nombres}" />
@@ -30,6 +30,7 @@
                                 <option value="DNI">L.E / DNI</option>
                                 <option value="CARNET_EXT">CARNET EXT.</option>
                                 <option value="PASAPORTE">PASAPORTE</option>
+                                <option value="RUC">RUC</option>
                             </select>
                         </div>
 						<div class="form-group col-12 col-lg-6">
@@ -64,6 +65,12 @@
                             </div>
                         </div>
                         
+                         <div class="form-group col-12">
+		                        	<label class="control-label">Activo</label>
+		                        	<div class="d-flex">
+										<input type="checkbox" id="switch" name="activo" checked="checked"/><label for="switch">Toggle</label>
+									</div>
+		                        </div>
                     </div>
                     <hr>
 	                 <!-- /.box-body -->

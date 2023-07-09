@@ -3,46 +3,149 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout">
 <head>
-    <title>Editar Categoria </title>
+    <title>Editar Venta </title>
     <th:block layout:fragment="styles">
     <link rel="stylesheet" th:href="@{/admin/static/css/switch.css}">
+    <link rel="stylesheet" th:href="@{/admin/static/css/jquery-ui.min.css}">
     </th:block>
 </head>
 <body>
 	<!-- CONTENIDO -->
 	<div layout:fragment="content">
 		<div class="card">
-			<div class="card-header"> <h3>Detalle categoria</h3></div>
+			<div class="card-header"> <h3>Venta</h3></div>
 			<div class="card-body">
-				<form th:action="@{/categoria/edit}" th:object="${categoria}" method="post" class="form-horizontal">
+				<form th:action="@{/venta/save}" th:object="${venta}" method="post" class="form-horizontal">
                     <div class="box-body row">
-                        <input type="hidden" name="id" th:field="*{id}">
-                        <div class="form-group col-12">
-                            <label class="control-label">Nombre</label>
+                   		<input type="hidden" th:field="*{id}">
+                    	<div class="form-group col-12">
+                    		<h5>Trabajador</h5>
+                    	</div>
+                    	<input type="hidden" th:field="*{trabajador.id}" readonly/>
+                    	<div class="form-group col-12 col-lg-6">
+                            <label class="control-label">Nombres</label>
                             <div>
-                                <input type="text" class="form-control"  th:field="*{nombreCategoria}" />
-                                <p class="text-danger d-block" th:if="${#fields.hasErrors('nombreCategoria')}" th:errors="*{nombreCategoria}"></p>
+                                <input type="text" class="form-control" th:field="*{trabajador.nombres}" readonly/>
                             </div>
                         </div>
-						<div class="form-group col-12">
-                            <label class="control-label">Descripcion</label>
+                        <div class="form-group col-12 col-lg-6">
+                            <label class="control-label">Apellidos</label>
                             <div>
-                                <input type="text" class="form-control"  th:field="*{descripcionCategoria}" />
-                                <p class="text-danger d-block" th:if="${#fields.hasErrors('descripcionCategoria')}" th:errors="*{descripcionCategoria}"></p>
+                                <input type="text" class="form-control" th:field="*{trabajador.apellidos}" readonly/>
                             </div>
                         </div>
-                        <div class="form-group col-12">
-                        	<label class="control-label">Activo</label>
-                        	<div class="d-flex">
-								<input type="checkbox" id="switch" name="activo" th:checked="${categoria.activo}"/><label for="switch">Toggle</label>
-							</div>
-                        </div>
+                        <div class="form-group col-12"><hr></div>
                         
+                        
+                        <div class="form-group col-12">
+                    		<h5>Cliente</h5>
+                    	</div>
+                    	<input type="hidden" th:field="*{cliente.id}" readonly/>
+                   	 	<div class="form-group col-7 col-lg-3">
+                           <label for="buscar_cliente" class="col-form-label" th:text="'Buscar cliente'"></label>
+							<input type="text" name="buscar_cliente" id="buscar_cliente" class="form-control" />
+                       	</div>
+                       	<div class="form-group col-4 col-lg-9 d-flex align-items-end">
+                           <button type="button" class="btn btn-primary text-white cursor-pointer" onclick="consultar_reniec()">Consultar RENIEC</button>
+                           <a class="btn btn-success text-white ml-3 cursor-pointer">Nuevo</a>
+                       	</div>
+                        
+                    	<div class="form-group col-12 col-lg-6">
+                            <label class="control-label">Nombres</label>
+                            <div>
+                                <input type="text" class="form-control" th:field="*{cliente.nombres}" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Tipo Documento</label>
+                            <div>
+                                <input type="text" class="form-control" th:field="*{cliente.tipoDocumentoIdentidad}" readonly/>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Documento Identidad</label>
+                            <input type="text" class="form-control" th:field="*{cliente.documentoIdentidad}" readonly/>
+                        </div>
+                        <div class="form-group col-12"><hr></div>
+                       	<div class="form-group col-12">
+                    		<h5>Detalle de Venta</h5>
+                    	</div>
+                    	<div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Tipo Documento</label>
+                            <select class="form-select form-control" id="tipoDocumento" name="tipoDocumento">
+                                <option value="BOLETA">BOLETA</option>
+                                <option value="FACTURA">FACTURA</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Tipo Moneda</label>
+                            <select class="form-select form-control" id="tipoMoneda" name="tipoMoneda" onchange="actualizarTasaCambio(event)">
+                                <option value="SOLES">SOLES</option>
+                                <option value="DOLARES">DOLARES</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-lg-3">
+                            <label class="control-label">Tasa de Cambio</label>
+                            <input type="text" class="form-control" th:field="*{tasaCambio}" readonly/>
+                        </div>
+                    	<div class="form-group col-12 col-lg-5">
+                            <label for="buscar_producto" class="col-form-label"
+							th:text="'Buscar producto'"></label>
+							<input type="text" name="buscar_producto" id="buscar_producto"
+								class="form-control" />
+                        </div>
+                        <div class="form-group col-12">
+                        	<table class="d-none">
+
+								<tbody id="plantillaItemsFactura">
+									<tr id="row_{ID}">
+										<td class="d-none"><input type="hidden" value="{ID}"
+											name="item_id[]" /></td>
+										<td>{NOMBRE}</td>
+										<td>{PRECIO}</td>
+										<td><input type="number" value="1" name="cantidad[]"
+											id="cantidad_{ID}" class="form-control col-sm-4" 
+											onchange="itemsHelper.calcularImporte({ID}, {PRECIO}, this.value);"/>
+											
+										</td>
+											
+										<td><span id="total_importe_{ID}">0</span></td>
+										<td>
+											<a href="#" 
+												class="btn btn-danger btn-sm" onclick="itemsHelper.eliminarLineaFactura({ID});">
+												<i class="material-icons md-18">
+													delete
+												</i>
+											</a>
+										</td>
+									</tr>
+						
+								</tbody>
+						
+							</table>
+
+							<table id="cargarItemProductos"
+							class="table table-sm table-striped table-hover">
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Precio</th>
+										<th>Cantidad</th>
+										<th>Total</th>
+										<th>Eliminar</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+							<h5>Total <span class="badge badge-secondary p-2" id="gran_total">0</span></h5>
+							<h5>Total Dolares <span class="badge badge-secondary p-2" id="gran_total_dolares">0</span></h5>
+                        </div>
                     </div>
                     <hr>
 	                 <!-- /.box-body -->
 	                 <div class="box-footer center">
-	                     <a th:href="@{/categoria/listar}">
+	                     <a th:href="@{/venta/listar}">
 	                         <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
 	                     </a>
 	                     <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i> Save</button>
@@ -56,8 +159,53 @@
 	</div>
 	
 	<th:block layout:fragment="script">
-    <script>
-    var mensajeError = "[[${mensajeError}]]";
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+
+	<script>
+    	function actualizarTasaCambio(event){
+    		var selectedValue = event.target.value;
+    		if(selectedValue  == "DOLARES"){
+    			$("#tasaCambio").val(3.67);
+    		}else{
+    			$("#tasaCambio").val(0.0);
+    		}
+    	}
+    	function consultar_reniec() {
+    		var term =  $("#buscar_cliente").val();
+				let url = '/cliente/consultar-clientes/'+ term + '?term='+ term;
+				$.ajax({
+					method:"GET",
+					url: url,
+					success: function(response){ 
+						console.log(response.id);
+						$("#cliente\\.id").val(response.id);
+						$("#cliente\\.tipoDocumentoIdentidad").val(response.tipoDocumentoIdentidad);
+					    $("#cliente\\.documentoIdentidad").val(response.documentoIdentidad);
+					    $("#cliente\\.nombres").val(response.nombres);	
+					    Swal.fire({
+					            position: 'top-end',
+					            icon: 'success',
+					            title: 'Persona encontrada.',
+					            showConfirmButton: false,
+					            timer: 1500
+					        });
+					},
+					error: function(error_data){
+						console.log(error_data)
+						Swal.fire({
+					            position: 'top-end',
+					            icon: 'error',
+					            title: 'Ha ocurrido un error.',
+					            showConfirmButton: false,
+					            timer: 1500
+					          });
+					}
+				})
+
+			}
+			
+    	var mensajeError = "[[${mensajeError}]]";
 			if(mensajeError){
 		    	Swal.fire({
 		    		position: 'center',
@@ -68,7 +216,149 @@
 		            timer: 1500
 			  	})
 		  	}
+		  	
+			$("#buscar_producto").autocomplete({
+
+				source : function(request, response) {
+					$.ajax({
+						url : "/producto/cargar-productos/" + request.term,
+						dataType : "json",
+						data : {
+							term : request.term
+						},
+						success : function(data) {
+							response($.map(data, function(item) {
+								return {
+									value : item.id,
+									label : item.nombreProducto,
+									precio : item.precioUnitario,
+								};
+							}));
+						},
+					});
+				},
+				select : function(event, ui) {
+					//$("#buscar_producto").val(ui.item.label);
+
+					if(itemsHelper.hasProducto(ui.item.value)){
+						itemsHelper.incrementaCantidad(ui.item.value, ui.item.precio);
+						return false;
+					}
+					
+					var linea = $("#plantillaItemsFactura").html();
+
+					linea = linea.replace(/{ID}/g, ui.item.value);
+					linea = linea.replace(/{NOMBRE}/g, ui.item.label);
+					linea = linea.replace(/{PRECIO}/g, ui.item.precio);
+
+					$("#cargarItemProductos tbody").append(linea);
+					itemsHelper.calcularImporte(ui.item.value, ui.item.precio, 1);
+
+					return false;
+				}
+			});
+		
+			var itemsHelper = {
+				calcularImporte: function(id, precio, cantidad){
+					$("#total_importe_" + id).html(parseFloat(precio) * parseFloat(cantidad));
+					this.calcularGranTotal();
+				},
+				hasProducto: function(id){
+					
+					var resultado = false;
+					
+					$('input[name="item_id[]"]').each(function(){
+						if(parseInt(id) == parseInt($(this).val()) ){
+							resultado = true;
+						}
+					});
+					
+					return resultado;
+				},
+				incrementaCantidad: function(id, precio){
+					var cantidad = $("#cantidad_" + id).val() ? parseInt($("#cantidad_" + id).val()) : 0;
+					$("#cantidad_" + id).val(++cantidad);
+					this.calcularImporte(id, precio, cantidad);
+				},
+				eliminarLineaFactura: function(id){
+					$("#row_" + id).remove();
+					this.calcularGranTotal();
+				},
+				calcularGranTotal: function(){
+					var total = 0;
+					console.log($("#tasaCambio").val());
+					
+					
+					$('span[id^="total_importe_"]').each(function(){
+						total += parseFloat($(this).html());
+					});
+					
+					$('#gran_total').html(total.toFixed(2));
+					
+					if ($("#tasaCambio").val() != '' && parseFloat($("#tasaCambio").val()) != 0 ){
+						var tasaCambiox = parseFloat($("#tasaCambio").val());
+						var resultadox = Math.ceil(total / tasaCambiox).toFixed(2);
+						$('#gran_total_dolares').html(resultadox);
+					}else{
+						$('#gran_total_dolares').html('0');
+					}
+
+					
+				}
+			}
+			$("#buscar_cliente").autocomplete({
+				source : function(request, response) {
+					$.ajax({
+						url : "/cliente/cargar-clientes/" + request.term,
+						dataType : "json",
+						data : {
+							term : request.term
+						},
+						success : function(data) {
+							response($.map(data, function(item) {
+								return {
+									value : item,
+									label : item.nombres,
+									id : item.id,
+									tipoDocumentoIdentidad : item.tipoDocumentoIdentidad,
+									documentoIdentidad : item.documentoIdentidad,
+								};
+							}));
+						},
+					});
+				},
+				select : function(event, ui) {
+					console.log(ui.item.id);
+					$("#cliente\\.id").val(ui.item.id);
+				    $("#cliente\\.tipoDocumentoIdentidad").val(ui.item.tipoDocumentoIdentidad);
+				    $("#cliente\\.documentoIdentidad").val(ui.item.documentoIdentidad);
+				    $("#cliente\\.nombres").val(ui.item.label);
+				    return false;
+				}
+			});
     </script>
+    
+    <script th:inline="javascript">
+    	var detalleVentas = [[${detalleVentas}]];
+    
+		    detalleVentas.forEach(function(detalleVenta) {
+				if(itemsHelper.hasProducto(detalleVenta.id)){
+					itemsHelper.incrementaCantidad(detalleVenta.id, detalleVenta.precio);
+					return false;
+				}
+				
+				var linea = $("#plantillaItemsFactura").html();
+
+				linea = linea.replace(/{ID}/g, detalleVenta.id);
+				linea = linea.replace(/{NOMBRE}/g, detalleVenta.nombre);
+				linea = linea.replace(/{PRECIO}/g, detalleVenta.precio);
+				$("#cargarItemProductos tbody").append(linea);
+				itemsHelper.calcularImporte(detalleVenta.id, detalleVenta.precio, 1);
+				
+				$("#cantidad_" + detalleVenta.id).val(detalleVenta.cantidad);
+		    });
+    </script>
+    
 </th:block>
 
 </body>				

@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout">
 <head>
-    <title>Nueva Venta </title>
+    <title>Status Venta </title>
     <th:block layout:fragment="styles">
     <link rel="stylesheet" th:href="@{/admin/static/css/switch.css}">
     <link rel="stylesheet" th:href="@{/admin/static/css/jquery-ui.min.css}">
@@ -15,12 +15,11 @@
 		<div class="card">
 			<div class="card-header"> <h3>Venta</h3></div>
 			<div class="card-body">
-				<form th:action="@{/venta/save}" th:object="${venta}" method="post" class="form-horizontal">
+				<form th:object="${venta}" method="post" class="form-horizontal">
                     <div class="box-body row">
                     	<div class="form-group col-12">
                     		<h5>Trabajador</h5>
                     	</div>
-                    	<input type="hidden" th:field="*{trabajador.id}" readonly/>
                     	<div class="form-group col-12 col-lg-6">
                             <label class="control-label">Nombres</label>
                             <div>
@@ -39,15 +38,6 @@
                         <div class="form-group col-12">
                     		<h5>Cliente</h5>
                     	</div>
-                    	<input type="hidden" th:field="*{cliente.id}" readonly/>
-                   	 	<div class="form-group col-7 col-lg-3">
-                           <label for="buscar_cliente" class="col-form-label" th:text="'Buscar cliente'"></label>
-							<input type="text" name="buscar_cliente" id="buscar_cliente" class="form-control" />
-                       	</div>
-                       	<div class="form-group col-4 col-lg-9 d-flex align-items-end">
-                           <button type="button" class="btn btn-primary text-white cursor-pointer" onclick="consultar_reniec()">Consultar RENIEC</button>
-                           <a class="btn btn-success text-white ml-3 cursor-pointer">Nuevo</a>
-                       	</div>
                         
                     	<div class="form-group col-12 col-lg-6">
                             <label class="control-label">Nombres</label>
@@ -71,28 +61,17 @@
                     	</div>
                     	<div class="form-group col-12 col-lg-3">
                             <label class="control-label">Tipo Documento</label>
-                            <select class="form-select form-control" id="tipoDocumento" name="tipoDocumento">
-                                <option value="BOLETA">BOLETA</option>
-                                <option value="FACTURA">FACTURA</option>
-                            </select>
+                            <input type="text" class="form-control" th:field="*{tipoDocumento}" readonly/>
                         </div>
                         <div class="form-group col-12 col-lg-3">
                             <label class="control-label">Tipo Moneda</label>
-                            <select class="form-select form-control" id="tipoMoneda" name="tipoMoneda" onchange="actualizarTasaCambio(event)">
-                                <option value="SOLES">SOLES</option>
-                                <option value="DOLARES">DOLARES</option>
-                            </select>
+                            <input type="text" class="form-control" th:field="*{tipoMoneda}" readonly/>
                         </div>
                         <div class="form-group col-12 col-lg-3">
                             <label class="control-label">Tasa de Cambio</label>
                             <input type="text" class="form-control" th:field="*{tasaCambio}" readonly/>
                         </div>
-                    	<div class="form-group col-12 col-lg-5">
-                            <label for="buscar_producto" class="col-form-label"
-							th:text="'Buscar producto'"></label>
-							<input type="text" name="buscar_producto" id="buscar_producto"
-								class="form-control" />
-                        </div>
+                    	
                         <div class="form-group col-12">
                         	<table class="d-none">
 
@@ -102,14 +81,9 @@
 											name="item_id[]" /></td>
 										<td>{NOMBRE}</td>
 										<td>{PRECIO}</td>
-										<td><input type="number" value="1" name="cantidad[]"
-											id="cantidad_{ID}" class="form-control col-sm-4" onchange="itemsHelper.calcularImporte({ID}, {PRECIO}, this.value);"/></td>
+										<td><input type="number" value="1" name="cantidad[]" readonly
+											id="cantidad_{ID}" class="form-control col-sm-4"/></td>
 										<td><span id="total_importe_{ID}">0</span></td>
-										<td><a href="#" class="btn btn-danger btn-sm" onclick="itemsHelper.eliminarLineaFactura({ID});">
-											<i class="material-icons md-18">
-												delete
-												</i>
-										</a></td>
 									</tr>
 						
 								</tbody>
@@ -124,7 +98,6 @@
 										<th>Precio</th>
 										<th>Cantidad</th>
 										<th>Total</th>
-										<th>Eliminar</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -140,7 +113,6 @@
 	                     <a th:href="@{/venta/listar}">
 	                         <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
 	                     </a>
-	                     <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i> Save</button>
 	                 </div>
 	                 <!-- /.box-footer -->
                 </form>
@@ -154,8 +126,7 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
-    <script>
-    	
+	<script>
     	function actualizarTasaCambio(event){
     		var selectedValue = event.target.value;
     		if(selectedValue  == "DOLARES"){
@@ -286,12 +257,12 @@
 						total += parseFloat($(this).html());
 					});
 					
-					$('#gran_total').html(total.toFixed(2));
+					$('#gran_total').html(total);
 					
 					if ($("#tasaCambio").val() != '' && parseFloat($("#tasaCambio").val()) != 0 ){
 						var tasaCambiox = parseFloat($("#tasaCambio").val());
 						var resultadox = Math.ceil(total / tasaCambiox);
-						$('#gran_total_dolares').html(resultadox.toFixed(2));
+						$('#gran_total_dolares').html(resultadox);
 					}else{
 						$('#gran_total_dolares').html('0');
 					}
@@ -330,6 +301,28 @@
 				}
 			});
     </script>
+    
+    <script th:inline="javascript">
+    	var detalleVentas = [[${detalleVentas}]];
+    
+		    detalleVentas.forEach(function(detalleVenta) {
+				if(itemsHelper.hasProducto(detalleVenta.id)){
+					itemsHelper.incrementaCantidad(detalleVenta.id, detalleVenta.precio);
+					return false;
+				}
+				
+				var linea = $("#plantillaItemsFactura").html();
+
+				linea = linea.replace(/{ID}/g, detalleVenta.id);
+				linea = linea.replace(/{NOMBRE}/g, detalleVenta.nombre);
+				linea = linea.replace(/{PRECIO}/g, detalleVenta.precio);
+				$("#cargarItemProductos tbody").append(linea);
+				itemsHelper.calcularImporte(detalleVenta.id, detalleVenta.precio, 1);
+				
+				$("#cantidad_" + detalleVenta.id).val(detalleVenta.cantidad);
+		    });
+    </script>
+    
 </th:block>
 
 </body>				

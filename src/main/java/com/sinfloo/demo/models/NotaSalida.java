@@ -1,5 +1,4 @@
 package com.sinfloo.demo.models;
-import java.text.DecimalFormat;
 import java.util.*;
 
 import javax.persistence.*;
@@ -12,8 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.sinfloo.demo.enums.EstadoVenta;
 
 @Entity
-@Table(name="venta")
-public class Venta {
+public class NotaSalida {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,46 +29,36 @@ public class Venta {
     private Cliente cliente;
     
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "venta_id")
-	private List<DetalleVenta> items;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venta_id")
+    private Venta venta;
     
+  
     @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date fechaEmision;
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaEntrega;
 
-    private String tipoDocumento;
-    private String tipoMoneda;
-    
     @Enumerated(EnumType.STRING)
     private EstadoVenta estado;
-    private Float tasaCambio;
 
-    
-    @OneToOne(mappedBy = "venta", cascade = CascadeType.ALL)
-    private NotaSalida notasalida;
-    
-    
+
 	private String usuarioRegistro;
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaRegistro;
 	
 	private String usuarioModificacion;
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaModificacion;
 
 	private String usuarioEliminacion;
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fechaEliminacion;
 	
-    public Venta() {
-    	this.items = new ArrayList<DetalleVenta>();
+    public NotaSalida() {
+    	
     }
     public int getId() {
         return id;
@@ -102,41 +90,20 @@ public class Venta {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    public Date getFechaEmision() {
-        return fechaEmision;
-    }
-    public void setFechaEmision(Date fechaEmision) {
-        this.fechaEmision = fechaEmision;
-    }
+    
     public Date getFechaEntrega() {
         return fechaEntrega;
     }
     public void setFechaEntrega(Date fechaEntrega) {
         this.fechaEntrega = fechaEntrega;
     }
-    public String getTipoDocumento() {
-        return tipoDocumento;
-    }
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
-    }
-    public String getTipoMoneda() {
-        return tipoMoneda;
-    }
-    public void setTipoMoneda(String tipoMoneda) {
-        this.tipoMoneda = tipoMoneda;
-    }
+   
+   
     public EstadoVenta getEstado() {
         return estado;
     }
     public void setEstado(EstadoVenta estado) {
         this.estado = estado;
-    }
-    public Float getTasaCambio() {
-        return tasaCambio;
-    }
-    public void setTasaCambio(Float tasaCambio) {
-        this.tasaCambio = tasaCambio;
     }
     
     public String getUsuarioRegistro() {
@@ -175,49 +142,13 @@ public class Venta {
     public void setFechaEliminacion(Date fechaEliminacion) {
         this.fechaEliminacion = fechaEliminacion;
     }
+	public Venta getVenta() {
+		return venta;
+	}
+	public void setVenta(Venta venta) {
+		this.venta = venta;
+	}
     
-	public List<DetalleVenta> getItems() {
-		return items;
-	}
-	public void setItems(List<DetalleVenta> items) {
-		this.items = items;
-	}
-	
-	public void addItemDetalleVenta(DetalleVenta item) {
-		this.items.add(item);
-	}
-	
-	public Double getTotalDescuento() {
-		Double total = 0.0;
-
-		int size = items.size();
-
-		for (int i = 0; i < size; i++) {
-			total += items.get(i).calcularImporteDescuento();
-		}
-		return redondearDecimales(total, 2);
-	}
-  public static double redondearDecimales(double valor, int decimales) {
-        DecimalFormat df = new DecimalFormat("#." + "0".repeat(decimales));
-        String valorFormateado = df.format(valor);
-        return Double.parseDouble(valorFormateado);
-    }
-	public Double getTotal() {
-		Double total = 0.0;
-
-		int size = items.size();
-
-		for (int i = 0; i < size; i++) {
-			total += items.get(i).calcularImporteTotal();
-		}
-		return redondearDecimales(total, 2);
-	}
-	public NotaSalida getNotasalida() {
-		return notasalida;
-	}
-	public void setNotasalida(NotaSalida notasalida) {
-		this.notasalida = notasalida;
-	}
 
 
 }

@@ -60,6 +60,13 @@
 		<div class="card-body table-responsive">
 			
 			<div class="p-3">
+				<div class="row">
+			        <div class="col-12 d-flex justify-content-center py-5">
+			            <h3 class="pr-3" style="font-weight: 600">Reportes </h3>
+			            <!-- <a id="btnCapturar" class="btn btn-success text-white" style="height: fit-content;cursor: pointer;"><i class="fas fa-file"></i> GENERAR REPORTE</a> -->
+			        </div>
+			    </div>
+    
 			    <div class="row">
 			        <div class="col-12">
 			            <div class="row">
@@ -100,7 +107,7 @@
 			                </div>                
 			                <div class="col-12 col-lg-6 pb-2">
 			                    <div class="p-4 text-center" style="background-color: #fff;border-radius: 1rem;">
-			                        <h6 style="font-weight: bold;">PRODUCTOS MÁS VENDIDOS</h6>
+			                        <h6 style="font-weight: bold;">5 PRODUCTOS MÁS VENDIDOS</h6>
 			                        <canvas id="myChartDona"></canvas>
 			                    </div>
 			                </div>
@@ -113,9 +120,37 @@
 	</div>						
 
 	</div>
-	
-	<!--  <th:block layout:fragment="script">
-     <script>
+
+<th:block layout:fragment="script">
+	<script>
+		let endpointCompras = '/api/get_countCompras/'
+        $.ajax({
+            method:"GET",
+            url: endpointCompras,
+            success: function(response){
+                console.log(response)
+
+                const fondo_color_compras=document.getElementById('fondo_color_compras')
+                const cantidad_compras=document.getElementById('cantidad_compras')
+                
+                let countCompras=-1
+                let tiempoCompras=setInterval(() => {
+                    countCompras+=1
+                    fondo_color_compras.style.height=`${countCompras}%`
+                    cantidad_compras.textContent=countCompras
+                    if(countCompras===response){
+                    	fondo_color_compras.style.height=`100%`
+                        clearInterval(tiempoCompras)
+                    }
+                }, 100);
+            },
+            error: function(error_data){
+                console.log("error")
+                console.log(error_data)
+            }
+        })
+      </script>
+      <script>
         let endpointVentas = '/api/get_countVentas/'
         $.ajax({
             method:"GET",
@@ -131,7 +166,8 @@
                     countVentas+=1
                     fondo_color_ventas.style.height=`${countVentas}%`
                     cantidad_ventas.textContent=countVentas
-                    if(countVentas===response.cantidad){
+                    if(countVentas===response){
+                    	fondo_color_ventas.style.height=`100%`
                         clearInterval(tiempoVentas)
                     }
                 }, 100);
@@ -143,70 +179,52 @@
         })
         
     </script>
-    <script>
-
-        let endpointCompras = '/api/get_countCompras/'
-        $.ajax({
-            method:"GET",
-            url: endpointCompras,
-            success: function(response){ 
-                console.log(response)               
-                const fondo_color_compras=document.getElementById('fondo_color_compras')
-                const cantidad_compras=document.getElementById('cantidad_compras')
-                
-                let countCompras=-1
-                let tiempoCompras=setInterval(() => {
-                    countCompras+=1
-                    fondo_color_compras.style.height=`${countCompras}%`
-                    cantidad_compras.textContent=countCompras
-                    if(countCompras===response.cantidad){
-                        clearInterval(tiempoCompras)
-                    }
-                }, 100);
-            },
-            error: function(error_data){
-                console.log("error")
-                console.log(error_data)
-            }
-        })
-        
-    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        let endpointLine = '/api/get_dataLine/'
-        $.ajax({
-            method:"GET",
-            url: endpointLine,
-            success: function(response){
-                console.log(response)
-
-                const config = {
-                type: 'line',
-                data: response,
-                options: {}
-                };
-                const myChart = new Chart(
-                document.getElementById('myChartLine'),
-                config
-                );
-            },
-            error: function(error_data){
-                console.log("error")
-                console.log(error_data)
-            }
-        })
-        
-      </script>
-    <script>
-        let endpointDona = '/api/get_dataDona/'
+    
+	<script >
+        let endpointDona = '/api/get_dataProductosMasVendidos/'
         $.ajax({
             method:"GET",
             url: endpointDona,
             success: function(response){
-                console.log(response)
+            
+	            const arrayOriginal = response;
+	            console.log(arrayOriginal)
+	            const list_productos = [];
+				const list_cantidadvendidos = [];
+				
+				arrayOriginal.forEach((elemento) => {
+				    list_productos.push(elemento.producto);
+				    list_cantidadvendidos.push(elemento.cantidadTotal);
+				});
+
+               var data = {
+		            'labels': list_productos,
+		            'datasets': [{
+		                'label': '# of Votes',
+		                'data': list_cantidadvendidos,
+		                'backgroundColor': [
+		                    'rgba(255, 99, 132, 0.2)',
+		                    'rgba(54, 162, 235, 0.2)',
+		                    'rgba(255, 206, 86, 0.2)',
+		                    'rgba(75, 192, 192, 0.2)',
+		                    'rgba(153, 102, 255, 0.2)',
+		                    'rgba(255, 159, 64, 0.2)'
+		                ],
+		                'borderColor': [
+		                    'rgba(255, 99, 132, 1)',
+		                    'rgba(54, 162, 235, 1)',
+		                    'rgba(255, 206, 86, 1)',
+		                    'rgba(75, 192, 192, 1)',
+		                    'rgba(153, 102, 255, 1)',
+		                    'rgba(255, 159, 64, 1)'
+		                ],
+		                'borderWidth': 1
+		            }]
+		        };
                 const config = {
                     type: 'doughnut',
-                    data: response,
+                    data: data,
                     options: {
                     responsive: true,
                     plugins: {
@@ -226,11 +244,75 @@
                 console.log(error_data)
             }
         })
+	        
+	</script>
+	 <script>
+        let endpointLine = '/api/get_ventaPorTrabajador/'
+        $.ajax({
+            method:"GET",
+            url: endpointLine,
+            success: function(response){
+                console.log(response)
+				
+				const arrayOriginal2 = response;
+	            console.log(arrayOriginal2)
+	            const list_trabajadores = [];
+				const list_ventasxtrabajador = [];
+				
+				arrayOriginal2.forEach((elemento) => {
+				    list_trabajadores.push(elemento.trabajador);
+				    list_ventasxtrabajador.push(elemento.cantidadTotal);
+				});
+				
+				
+				var data2 = {
+		          'labels': list_trabajadores,
+		          'datasets': [{
+		            'label': 'Cantidad de Ventas',
+		            'backgroundColor': 'rgb(255, 99, 132)',
+		            'borderColor': 'rgb(255, 99, 132)',
+		            'data': list_ventasxtrabajador,
+		          }]
+			    };
+			    
+                const config = {
+                type: 'line',
+                data: data2,
+                options: {}
+                };
+                const myChart = new Chart(
+                document.getElementById('myChartLine'),
+                config
+                );
+            },
+            error: function(error_data){
+                console.log("error")
+                console.log(error_data)
+            }
+        })
         
-    </script>
-</th:block>-->
+      </script>
+     <script type="text/javascript">
+        const $boton = document.querySelector("#btnCapturar"), // El botón que desencadena
+        $objetivo = document.querySelector("#contenedor"), // A qué le tomamos la foto
+        $contenedorCanvas = document.querySelector("#contenedorCanvas"); // En dónde ponemos el elemento canvas
 
-<th:block layout:fragment="script">
+        // Agregar el listener al botón
+        $boton.addEventListener("click", () => {
+        html2canvas($objetivo) // Llamar a html2canvas y pasarle el elemento
+            .then(canvas => {
+            // Cuando se resuelva la promesa traerá el canvas
+            // Crear un elemento <a>
+            let enlace = document.createElement('a');
+            let date = new Date();
+            enlace.download = "Rerpote "+date+" .png";
+            // Convertir la imagen a Base64
+            enlace.href = canvas.toDataURL();
+            // Hacer click en él
+            enlace.click();
+            });
+        });
+    </script>
     <script>
         /*Swal.fire({
             position: 'center',

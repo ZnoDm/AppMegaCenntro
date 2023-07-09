@@ -61,9 +61,11 @@ public class RolController {
         	model.addAttribute("mensajeError","Llene todos los campos");
             return edit_template;
         }
-        if(rolService.getByNombreRol(rol.getNombreRol()).get().getId() != rol.getId() ) {
-        	model.addAttribute("mensajeError","El Rol ya existe");
-        	return edit_template;
+        if(rolService.existsByNombreRol(rol.getNombreRol())) {
+	        if(rolService.getByNombreRol(rol.getNombreRol()).get().getId() != rol.getId() ) {
+	        	model.addAttribute("mensajeError","El Rol ya existe");
+	        	return edit_template;
+	        }
         }
         System.out.println(result.hasErrors());
         rolService.save(rol);

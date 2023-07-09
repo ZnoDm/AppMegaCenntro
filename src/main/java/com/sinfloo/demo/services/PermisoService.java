@@ -1,7 +1,6 @@
 package com.sinfloo.demo.services;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sinfloo.demo.models.Permiso;
-import com.sinfloo.demo.models.Rol;
 import com.sinfloo.demo.repositories.PermisoRepository;
 
 @Service
@@ -30,8 +28,8 @@ public class PermisoService {
 	public boolean existsById(int id) {
 		return permisoRepository.existsById(id);
 	}
-	public Optional<Permiso> getByNombrePermiso(String nombrePermiso){
-		return permisoRepository.findByNombrePermiso(nombrePermiso);
+	public Optional<Permiso> getByNombrePermiso(String nombrePermiso) {
+	    return permisoRepository.findByNombrePermiso(nombrePermiso);
 	}
 	
 	public boolean existsByNombrePermiso(String nombrePermiso) {

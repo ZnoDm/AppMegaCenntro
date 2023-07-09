@@ -24,11 +24,6 @@ public interface VentaRepository extends JpaRepository<Venta, Integer>{
     // Método para buscar todas las Ventas por un atributo específico (Ejemplo: nombre)
     //List<Venta> findByNombre(String nombre);
     
-    
-    @Modifying
-    @Query("UPDATE Venta e SET e.activo = :activo, e.eliminado = :eliminado WHERE e.id = :id")
-    void eliminar(@Param("id") Integer id, @Param("activo") Boolean activo,@Param("eliminado") Boolean eliminado);
-    
     @Modifying
     @Query("SELECT e FROM Venta e ORDER BY e.id DESC")
     List<Venta> obtenerUltimaVenta();

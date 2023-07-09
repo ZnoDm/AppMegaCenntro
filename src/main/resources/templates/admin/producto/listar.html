@@ -28,6 +28,7 @@
 						<th>Nro</th>
 						<th>Acciones</th>
 						<th>Codigo</th>
+						<th>Categoria</th>
 						<th>Nombre</th>
 						<th>Modelo</th>
 						<th>Marca</th>
@@ -53,6 +54,7 @@
 							</div>
 						</td>
 						<td th:text="${producto.codigo}"></td>
+						<td th:text="${producto.categoria.nombreCategoria}"></td>
 						<td th:text="${producto.nombreProducto}"></td>
 						
 						<td th:text="${producto.modelo}"></td>

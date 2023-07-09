@@ -1,6 +1,9 @@
 package com.sinfloo.demo.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.sinfloo.demo.enums.TipoDocumento;
 import com.sinfloo.demo.models.Cliente;
-import com.sinfloo.demo.models.Producto;
+import com.sinfloo.demo.models.Permiso;
 import com.sinfloo.demo.services.ClienteService;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
@@ -51,6 +54,10 @@ public class ClienteController {
         	model.addAttribute("mensajeError","Llene todos los campos");
             return add_template;
         }
+        if(clienteService.existsByDocumentoIdentidad(cliente.getDocumentoIdentidad())) {
+        	model.addAttribute("mensajeError","Cliente ya existe");
+	      	 return add_template;
+	       }
         System.out.println(result.hasErrors());
         clienteService.save(cliente);
         String mensajeAlert = "";
@@ -75,6 +82,13 @@ public class ClienteController {
         	model.addAttribute("mensajeError","Llene todos los campos");
             return edit_template;
         }
+        if(clienteService.existsByDocumentoIdentidad(cliente.getDocumentoIdentidad())) {
+        	 if(clienteService.getByDocumentoIdentidad(cliente.getDocumentoIdentidad()).get().getId() != cliente.getId() ) {
+ 	        	
+	        	model.addAttribute("mensajeError","Cliente con ese documento de identidad ya existe");
+		      	 return edit_template;
+        	 }
+	      }
         System.out.println(result.hasErrors());
         clienteService.save(cliente);
         String mensajeAlert = "";
@@ -86,13 +100,6 @@ public class ClienteController {
     
 
 
-
-    @GetMapping("/delete/{id}")
-    public String deleteCliente(@PathVariable("id") Integer id, Model model) {
-        clienteService.eliminar(id,false);
-    
-        return list_redirect+ "?mensajeAlert=Cliente eliminado.";
-    }
 
     @GetMapping("/listar")
     public String listCliente(@RequestParam(defaultValue = "0") int pagina,Model model,
@@ -116,10 +123,21 @@ public class ClienteController {
     
     @GetMapping(value = "/cargar-clientes/{term}", produces = { "application/json" })
     @ResponseBody
-    public List<Cliente> consultarClientePorDocumentoIdentidad(@PathVariable String term) {
+    public List<Object> consultarClientePorDocumentoIdentidad(@PathVariable String term) {
     	
-    	return clienteService.listarByDocumentoIdentidad(term);
-    	
+    	List<Cliente> clientes = clienteService.listarByDocumentoIdentidad(term);
+    	 List<Object> resultado = new ArrayList<>();
+
+          for (Cliente cliente : clientes) {
+              Map<String, Object> objetoCoincidente = new HashMap<>();
+              objetoCoincidente.put("id", cliente.getId());
+              objetoCoincidente.put("nombres", cliente.getNombres());
+              objetoCoincidente.put("tipoDocumentoIdentidad", cliente.getTipoDocumentoIdentidad());
+              objetoCoincidente.put("documentoIdentidad", cliente.getDocumentoIdentidad());
+              resultado.add(objetoCoincidente);
+          }
+		
+		return resultado;
     }
 
 	@GetMapping(value = "/consultar-clientes/{term}", produces = { "application/json" })

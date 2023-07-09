@@ -26,9 +26,6 @@ public class Categoria {
 	@NotEmpty
 	private String descripcionCategoria;
 	
-	private Boolean activo;
-	
-	private Boolean eliminado;
 	
 	private String usuarioRegistro;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -76,25 +73,6 @@ public class Categoria {
 		this.descripcionCategoria = descripcionCategoria;
 	}
 
-
-	public Boolean getActivo() {
-		return activo;
-	}
-
-
-	public void setActivo(Boolean activo) {
-		this.activo = (activo != null) ? activo : false;
-	}
-
-
-	public Boolean getEliminado() {
-		return eliminado;
-	}
-
-
-	public void setEliminado(Boolean eliminado) {
-		this.eliminado = (eliminado != null) ? eliminado : false;
-	}
 
 
 	public String getUsuarioRegistro() {

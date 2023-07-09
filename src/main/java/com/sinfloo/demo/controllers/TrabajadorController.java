@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sinfloo.demo.models.Trabajador;
+import com.sinfloo.demo.models.Usuario;
 import com.sinfloo.demo.services.TrabajadorService;
+import com.sinfloo.demo.services.UsuarioService;
 
 
 
@@ -29,6 +31,8 @@ public class TrabajadorController {
 	
 	@Autowired
 	TrabajadorService trabajadorService;
+	@Autowired
+	UsuarioService usuarioService;
 	
 	private String edit_template ="/admin/trabajador/editar";
 	private String add_template ="/admin/trabajador/nuevo";
@@ -37,9 +41,11 @@ public class TrabajadorController {
 	    
 	@GetMapping("/add")
     public String addTrabajador(Trabajador trabajador, Model model){
+		List<Usuario> usuarios =usuarioService.listarUsuarios();
+		model.addAttribute("usuarios",usuarios);
 		
         model.addAttribute("trabajador",trabajador);
-
+        
         return add_template;
     }
 
@@ -47,7 +53,11 @@ public class TrabajadorController {
     @GetMapping("/edit/{id}")
     public String editTrabajador(@PathVariable("id") Integer id, Model model){
         Trabajador trabajador = trabajadorService.get(id);
+        
         model.addAttribute("trabajador", trabajador);
+        
+        List<Usuario> usuarios =usuarioService.listarUsuarios();
+		model.addAttribute("usuarios",usuarios);
 
         return edit_template;
     }
@@ -58,6 +68,8 @@ public class TrabajadorController {
     	System.out.println(trabajador.getActivo());
 
         if(result.hasErrors()){
+        	List<Usuario> usuarios =usuarioService.listarUsuarios();
+    		model.addAttribute("usuarios",usuarios);
         	model.addAttribute("mensajeError","Llene todos los campos");
             return add_template;
         }
@@ -75,6 +87,8 @@ public class TrabajadorController {
     	System.out.println(trabajador.getActivo());
 
         if(result.hasErrors()){
+        	List<Usuario> usuarios =usuarioService.listarUsuarios();
+    		model.addAttribute("usuarios",usuarios);
         	model.addAttribute("mensajeError","Llene todos los campos");
             return edit_template;
         }

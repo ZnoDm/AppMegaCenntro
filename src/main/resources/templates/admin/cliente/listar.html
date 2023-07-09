@@ -30,6 +30,7 @@
 						<th>Tipo Documento Identidad</th>
 						<th>Documento Identidad</th>
 						<th>Nombres</th>
+						<th>Telefono</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -42,16 +43,12 @@
 										edit
 									</i>
 								</a>
-								<a th:href="@{'/cliente/delete/' + ${cliente.id}}" class="btn btn-danger mb-0 p-1 d-flex alig-items-center">
-									<i class="material-icons md-18">
-									delete
-									</i>
-								</a>
 							</div>
 						</td>
 						<td th:text="${cliente.tipoDocumentoIdentidad}"></td>
 						<td th:text="${cliente.documentoIdentidad}"></td>
 						<td th:text="${cliente.nombres}"></td>
+						<td th:text="${cliente.telefono}"></td>
 					</tr>
 				</tbody>
 			</table>

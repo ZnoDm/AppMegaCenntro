@@ -41,9 +41,6 @@ public class CategoriaService {
 	public Categoria get(Integer  id) {
         return categoriaRepository.findById(id).get();
     }
-	public void eliminar(Integer id, Boolean activo, Boolean eliminado) {
-		categoriaRepository.eliminar(id, activo,eliminado);
-    }
 	public void delete (Integer id) {
 		Categoria categoria = categoriaRepository.findById(id).orElse(null);
         if (categoria != null) {

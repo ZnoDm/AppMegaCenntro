@@ -65,10 +65,13 @@ public class PermisoController {
         	model.addAttribute("mensajeError","Llene todos los campos");
             return edit_template;
         }
-        if(permisoService.getByNombrePermiso(permiso.getNombrePermiso()).get().getId() != permiso.getId() ) {
-        	model.addAttribute("mensajeError","El Permiso ya existe");
-        	return edit_template;
-        }
+		 if(permisoService.existsByNombrePermiso(permiso.getNombrePermiso())) {
+			 if(permisoService.getByNombrePermiso(permiso.getNombrePermiso()).get().getId() != permiso.getId() ) {
+		        	model.addAttribute("mensajeError","El Permiso ya existe");
+		        	return edit_template;
+		        } 
+		 }
+        
         System.out.println(result.hasErrors());
         permisoService.save(permiso);
         return list_redirect+ "?mensajeAlert=Permiso actualizado.";

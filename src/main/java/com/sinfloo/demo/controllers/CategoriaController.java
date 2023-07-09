@@ -6,8 +6,6 @@ import javax.validation.Valid;
 
 
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -50,7 +48,6 @@ public class CategoriaController {
 	    public String saveCategoria(@Valid @ModelAttribute("categoria") Categoria categoria, 
 	    		BindingResult result, Model model){
 	    	
-	    	System.out.println(categoria.getActivo());
 
 	        if(result.hasErrors()){
 	        	model.addAttribute("mensajeError","Llene todos los campos");
@@ -80,16 +77,16 @@ public class CategoriaController {
     public String editCategoria(@Valid @ModelAttribute("categoria") Categoria categoria, 
     		BindingResult result, Model model){
     	
-    	System.out.println(categoria.getActivo());
 
         if(result.hasErrors()){
         	model.addAttribute("mensajeError","Llene todos los campos");
             return edit_template;
         }
-        
-        if(categoriaService.getByNombreCategoria(categoria.getNombreCategoria()).get().getId() != categoria.getId() ) {
-        	model.addAttribute("mensajeError","La Categoria ya existe");
-        	return edit_template;
+        if(categoriaService.existsByNombreCategoria(categoria.getNombreCategoria())) {
+	        if(categoriaService.getByNombreCategoria(categoria.getNombreCategoria()).get().getId() != categoria.getId() ) {
+	        	model.addAttribute("mensajeError","La Categoria ya existe");
+	        	return edit_template;
+	        }
         }
         System.out.println(result.hasErrors());
         categoriaService.save(categoria);
@@ -100,21 +97,6 @@ public class CategoriaController {
     }
 
 
-
-    @GetMapping("/enabledDisabled/{id}/{estado}")
-    public String enabledDisabledCategoria(@PathVariable("id") Integer id,@PathVariable("estado") Boolean estado, Model model) {
-    	String mensajeAlert = "";
-    	if(estado == true) {
-            categoriaService.eliminar(id,true,false);
-            mensajeAlert = "?mensajeAlert=Categoria habilitado.";
-    	}
-    	else {
-    		categoriaService.eliminar(id,false,true);
-            mensajeAlert = "?mensajeAlert=Categoria deshabilitado.";
-    	}
-    		
-        return list_redirect+ mensajeAlert;
-    }
     @GetMapping("/delete/{id}")
     public String deleteCategoria(@PathVariable("id") Integer id, Model model) {
         categoriaService.delete(id);

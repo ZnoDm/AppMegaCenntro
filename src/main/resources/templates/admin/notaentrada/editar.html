@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       layout:decorate="layout">
 <head>
-    <title>Nueva Venta </title>
+    <title>Editar Nota Entrada </title>
     <th:block layout:fragment="styles">
     <link rel="stylesheet" th:href="@{/admin/static/css/switch.css}">
     <link rel="stylesheet" th:href="@{/admin/static/css/jquery-ui.min.css}">
@@ -13,10 +13,14 @@
 	<!-- CONTENIDO -->
 	<div layout:fragment="content">
 		<div class="card">
-			<div class="card-header"> <h3>Venta</h3></div>
+			<div class="card-header"> <h3>Nota Entrada</h3></div>
 			<div class="card-body">
-				<form th:action="@{/venta/save}" th:object="${venta}" method="post" class="form-horizontal">
+				<form th:action="@{/notaentrada/edit}" th:object="${notaentrada}" method="post" class="form-horizontal">
                     <div class="box-body row">
+                    
+                    	<input type="hidden" th:field="*{id}" readonly/>
+                    	<input type="hidden" th:field="*{codigo}" readonly/>
+                    	<input type="hidden" th:field="*{correlativo}" readonly/>
                     	<div class="form-group col-12">
                     		<h5>Trabajador</h5>
                     	</div>
@@ -37,55 +41,39 @@
                         
                         
                         <div class="form-group col-12">
-                    		<h5>Cliente</h5>
+                    		<h5>Proveedor</h5>
                     	</div>
-                    	<input type="hidden" th:field="*{cliente.id}" readonly/>
+                    	<input type="hidden" th:field="*{proveedor.id}" readonly/>
                    	 	<div class="form-group col-7 col-lg-3">
-                           <label for="buscar_cliente" class="col-form-label" th:text="'Buscar cliente'"></label>
-							<input type="text" name="buscar_cliente" id="buscar_cliente" class="form-control" />
+                           <label for="buscar_proveedor" class="col-form-label" th:text="'Buscar proveedor'"></label>
+							<input type="text" name="buscar_proveedor" id="buscar_proveedor" class="form-control" />
                        	</div>
-                       	<div class="form-group col-4 col-lg-9 d-flex align-items-end">
-                           <button type="button" class="btn btn-primary text-white cursor-pointer" onclick="consultar_reniec()">Consultar RENIEC</button>
-                           <a class="btn btn-success text-white ml-3 cursor-pointer">Nuevo</a>
-                       	</div>
-                        
+
                     	<div class="form-group col-12 col-lg-6">
                             <label class="control-label">Nombres</label>
                             <div>
-                                <input type="text" class="form-control" th:field="*{cliente.nombres}" readonly/>
+                                <input type="text" class="form-control" th:field="*{proveedor.nombres}" readonly/>
                             </div>
                         </div>
                         <div class="form-group col-12 col-lg-3">
                             <label class="control-label">Tipo Documento</label>
                             <div>
-                                <input type="text" class="form-control" th:field="*{cliente.tipoDocumentoIdentidad}" readonly/>
+                                <input type="text" class="form-control" th:field="*{proveedor.tipoDocumentoIdentidad}" readonly/>
                             </div>
                         </div>
                         <div class="form-group col-12 col-lg-3">
                             <label class="control-label">Documento Identidad</label>
-                            <input type="text" class="form-control" th:field="*{cliente.documentoIdentidad}" readonly/>
+                            <input type="text" class="form-control" th:field="*{proveedor.documentoIdentidad}" readonly/>
                         </div>
                         <div class="form-group col-12"><hr></div>
                        	<div class="form-group col-12">
-                    		<h5>Detalle de Venta</h5>
+                    		<h5>Detalle de Nota Entrada</h5>
                     	</div>
                     	<div class="form-group col-12 col-lg-3">
                             <label class="control-label">Tipo Documento</label>
                             <select class="form-select form-control" id="tipoDocumento" name="tipoDocumento">
-                                <option value="BOLETA">BOLETA</option>
                                 <option value="FACTURA">FACTURA</option>
                             </select>
-                        </div>
-                        <div class="form-group col-12 col-lg-3">
-                            <label class="control-label">Tipo Moneda</label>
-                            <select class="form-select form-control" id="tipoMoneda" name="tipoMoneda" onchange="actualizarTasaCambio(event)">
-                                <option value="SOLES">SOLES</option>
-                                <option value="DOLARES">DOLARES</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-12 col-lg-3">
-                            <label class="control-label">Tasa de Cambio</label>
-                            <input type="text" class="form-control" th:field="*{tasaCambio}" readonly/>
                         </div>
                     	<div class="form-group col-12 col-lg-5">
                             <label for="buscar_producto" class="col-form-label"
@@ -101,10 +89,8 @@
 										<td class="d-none"><input type="hidden" value="{ID}"
 											name="item_id[]" /></td>
 										<td>{NOMBRE}</td>
-										<td>{PRECIO}</td>
 										<td><input type="number" value="1" name="cantidad[]"
 											id="cantidad_{ID}" class="form-control col-sm-4" onchange="itemsHelper.calcularImporte({ID}, {PRECIO}, this.value);"/></td>
-										<td><span id="total_importe_{ID}">0</span></td>
 										<td><a href="#" class="btn btn-danger btn-sm" onclick="itemsHelper.eliminarLineaFactura({ID});">
 											<i class="material-icons md-18">
 												delete
@@ -121,23 +107,19 @@
 								<thead>
 									<tr>
 										<th>Nombre</th>
-										<th>Precio</th>
 										<th>Cantidad</th>
-										<th>Total</th>
 										<th>Eliminar</th>
 									</tr>
 								</thead>
 								<tbody>
 								</tbody>
 							</table>
-							<h5>Total <span class="badge badge-secondary p-2" id="gran_total">0</span></h5>
-							<h5>Total Dolares <span class="badge badge-secondary p-2" id="gran_total_dolares">0</span></h5>
                         </div>
                     </div>
                     <hr>
 	                 <!-- /.box-body -->
 	                 <div class="box-footer center">
-	                     <a th:href="@{/venta/listar}">
+	                     <a th:href="@{/notaentrada/listar}">
 	                         <button type="button" class="btn btn-default"><i class="fa fa-right"></i> Cancel</button>
 	                     </a>
 	                     <button type="submit" class="btn btn-info pull-right"><i class="fa fa-save"></i> Save</button>
@@ -164,40 +146,7 @@
     			$("#tasaCambio").val(0.0);
     		}
     	}
-    	function consultar_reniec() {
-    		var term =  $("#buscar_cliente").val();
-				let url = '/cliente/consultar-clientes/'+ term + '?term='+ term;
-				$.ajax({
-					method:"GET",
-					url: url,
-					success: function(response){ 
-						console.log(response.id);
-						$("#cliente\\.id").val(response.id);
-						$("#cliente\\.tipoDocumentoIdentidad").val(response.tipoDocumentoIdentidad);
-					    $("#cliente\\.documentoIdentidad").val(response.documentoIdentidad);
-					    $("#cliente\\.nombres").val(response.nombres);	
-					    Swal.fire({
-					            position: 'top-end',
-					            icon: 'success',
-					            title: 'Persona encontrada.',
-					            showConfirmButton: false,
-					            timer: 1500
-					        });
-					},
-					error: function(error_data){
-						console.log(error_data)
-						Swal.fire({
-					            position: 'top-end',
-					            icon: 'error',
-					            title: 'Ha ocurrido un error.',
-					            showConfirmButton: false,
-					            timer: 1500
-					          });
-					}
-				})
-
-			}
-			
+    	
     	var mensajeError = "[[${mensajeError}]]";
 			if(mensajeError){
 		    	Swal.fire({
@@ -242,7 +191,6 @@
 
 					linea = linea.replace(/{ID}/g, ui.item.value);
 					linea = linea.replace(/{NOMBRE}/g, ui.item.label);
-					linea = linea.replace(/{PRECIO}/g, ui.item.precio);
 
 					$("#cargarItemProductos tbody").append(linea);
 					itemsHelper.calcularImporte(ui.item.value, ui.item.precio, 1);
@@ -252,10 +200,6 @@
 			});
 		
 			var itemsHelper = {
-				calcularImporte: function(id, precio, cantidad){
-					$("#total_importe_" + id).html(parseFloat(precio) * parseFloat(cantidad));
-					this.calcularGranTotal();
-				},
 				hasProducto: function(id){
 					
 					var resultado = false;
@@ -275,34 +219,12 @@
 				},
 				eliminarLineaFactura: function(id){
 					$("#row_" + id).remove();
-					this.calcularGranTotal();
 				},
-				calcularGranTotal: function(){
-					var total = 0;
-					console.log($("#tasaCambio").val());
-					
-					
-					$('span[id^="total_importe_"]').each(function(){
-						total += parseFloat($(this).html());
-					});
-					
-					$('#gran_total').html(total.toFixed(2));
-					
-					if ($("#tasaCambio").val() != '' && parseFloat($("#tasaCambio").val()) != 0 ){
-						var tasaCambiox = parseFloat($("#tasaCambio").val());
-						var resultadox = Math.ceil(total / tasaCambiox);
-						$('#gran_total_dolares').html(resultadox.toFixed(2));
-					}else{
-						$('#gran_total_dolares').html('0');
-					}
-
-					
-				}
 			}
-			$("#buscar_cliente").autocomplete({
+			$("#buscar_proveedor").autocomplete({
 				source : function(request, response) {
 					$.ajax({
-						url : "/cliente/cargar-clientes/" + request.term,
+						url : "/proveedor/cargar-proveedores/" + request.term,
 						dataType : "json",
 						data : {
 							term : request.term
@@ -322,14 +244,35 @@
 				},
 				select : function(event, ui) {
 					console.log(ui.item.id);
-					$("#cliente\\.id").val(ui.item.id);
-				    $("#cliente\\.tipoDocumentoIdentidad").val(ui.item.tipoDocumentoIdentidad);
-				    $("#cliente\\.documentoIdentidad").val(ui.item.documentoIdentidad);
-				    $("#cliente\\.nombres").val(ui.item.label);
+					$("#proveedor\\.id").val(ui.item.id);
+				    $("#proveedor\\.tipoDocumentoIdentidad").val(ui.item.tipoDocumentoIdentidad);
+				    $("#proveedor\\.documentoIdentidad").val(ui.item.documentoIdentidad);
+				    $("#proveedor\\.nombres").val(ui.item.label);
 				    return false;
 				}
 			});
     </script>
+    
+    <script th:inline="javascript">
+    	var detalleVentas = [[${detalleNotaEntradas}]];
+    
+		    detalleVentas.forEach(function(detalleVenta) {
+				if(itemsHelper.hasProducto(detalleVenta.id)){
+					itemsHelper.incrementaCantidad(detalleVenta.id, detalleVenta.precio);
+					return false;
+				}
+				
+				var linea = $("#plantillaItemsFactura").html();
+
+				linea = linea.replace(/{ID}/g, detalleVenta.id);
+				linea = linea.replace(/{NOMBRE}/g, detalleVenta.nombre);
+				$("#cargarItemProductos tbody").append(linea);
+				
+				$("#cantidad_" + detalleVenta.id).val(detalleVenta.cantidad);
+		    });
+    </script>
+    
+    
 </th:block>
 
 </body>				

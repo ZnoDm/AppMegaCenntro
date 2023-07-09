@@ -55,6 +55,8 @@ public class ProductoController {
     @GetMapping("/edit/{id}")
     public String editProducto(@PathVariable("id") Integer id, Model model){
         Producto producto = productoService.get(id);
+        List<Categoria> categorias = categoriaService.listarCategorias();
+        model.addAttribute("categorias",categorias);
         model.addAttribute("producto", producto);
 
         return edit_template;
@@ -94,13 +96,13 @@ public class ProductoController {
              model.addAttribute("mensajeError","Llene todos los campos");
             return edit_template;
         }
-        
-        if(productoService.getByNombreProducto(producto.getNombreProducto()).get().getId() != producto.getId() ) {
-    		model.addAttribute("mensajeError","El producto ya existe");
-    		List<Categoria> categorias = categoriaService.listarCategorias();
-    		model.addAttribute("categorias",categorias);
-        	return edit_template;
-        }
+        if(productoService.existsByNombreProducto(producto.getNombreProducto())) {
+	        if(productoService.getByNombreProducto(producto.getNombreProducto()).get().getId() != producto.getId() ) {
+	    		model.addAttribute("mensajeError","El producto ya existe");
+	    		List<Categoria> categorias = categoriaService.listarCategorias();
+	    		model.addAttribute("categorias",categorias);
+	        	return edit_template;
+	        }}
         
         System.out.println(result.hasErrors());
         productoService.save(producto);

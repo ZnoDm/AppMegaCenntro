@@ -30,7 +30,9 @@ public class Proveedor {
 
 	
     private String documentoIdentidad;
-
+    
+    @OneToMany(mappedBy = "proveedor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<NotaEntrada> notaentradas;
 
 	
 	private Boolean activo;
@@ -50,6 +52,20 @@ public class Proveedor {
 	
 	
 	
+	public List<NotaEntrada> getNotaentradas() {
+		return notaentradas;
+	}
+
+
+
+
+	public void setNotaentradas(List<NotaEntrada> notaentradas) {
+		this.notaentradas = notaentradas;
+	}
+
+
+
+
 	public Proveedor() {
 	}
 

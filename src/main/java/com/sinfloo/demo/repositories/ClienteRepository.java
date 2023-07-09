@@ -21,13 +21,13 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
     List<Cliente> findAll();
 
     // Método para buscar todas las Clientes por un atributo específico (Ejemplo: nombre)
-    //List<Cliente> findByNombre(String nombre);
+    boolean existsByDocumentoIdentidad(String documentoIdentidad);
     
+
+	Optional<Cliente> findByDocumentoIdentidad(String documentoIdentidad);
+	
     @Modifying
     @Query("select p from Cliente p where p.documentoIdentidad like %:term%")
     List<Cliente> listarByDocumentoIdentidad(@Param("term") String term);
     
-    @Modifying
-    @Query("UPDATE Cliente e SET e.eliminado = :eliminado WHERE e.id = :id")
-    void eliminar(@Param("id") Integer id, @Param("eliminado") Boolean eliminado);
 }

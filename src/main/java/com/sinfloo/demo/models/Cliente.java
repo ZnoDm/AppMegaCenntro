@@ -34,9 +34,6 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Venta> ventas;
 	
-	private Boolean activo;
-	private Boolean eliminado;
-	
 	private String usuarioRegistro;
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date fechaRegistro;
@@ -130,31 +127,6 @@ public class Cliente {
 	public void setDocumentoIdentidad(String documentoIdentidad) {
 		this.documentoIdentidad = documentoIdentidad;
 	}
-
-
-
-	public Boolean getActivo() {
-		return activo;
-	}
-
-
-
-	public void setActivo(Boolean activo) {
-		this.activo = activo;
-	}
-
-
-
-	public Boolean getEliminado() {
-		return eliminado;
-	}
-
-
-
-	public void setEliminado(Boolean eliminado) {
-		this.eliminado = eliminado;
-	}
-
 
 
 	public String getUsuarioRegistro() {

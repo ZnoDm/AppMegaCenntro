@@ -23,10 +23,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Integer>{
     // Método para buscar todas las Categorias por un atributo específico (Ejemplo: nombre)
     //List<Categoria> findByNombre(String nombre);
     
-    
-    @Modifying
-    @Query("UPDATE Categoria e SET e.activo = :activo, e.eliminado = :eliminado WHERE e.id = :id")
-    void eliminar(@Param("id") Integer id, @Param("activo") Boolean activo,@Param("eliminado") Boolean eliminado);
+   
     
     Optional<Categoria> findByNombreCategoria(String nombreCategoria);
     

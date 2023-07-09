@@ -34,9 +34,7 @@ public class VentaService {
 	public Venta get(Integer  id) {
         return ventaRepository.findById(id).get();
     }
-	public void eliminar(Integer id, Boolean activo, Boolean eliminado) {
-		ventaRepository.eliminar(id, activo,eliminado);
-    }
+	
 	public void delete (Integer id) {
 		Venta venta = ventaRepository.findById(id).orElse(null);
         if (venta != null) {
