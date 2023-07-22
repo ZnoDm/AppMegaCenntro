@@ -56,10 +56,10 @@ public class VentaController {
 	@Autowired
     ClienteService clienteService;
 	
-	private String edit_template ="/admin/venta/editar";
-	private String add_template ="/admin/venta/nuevo";
-	private String ver_template ="/admin/venta/ver";
-    private String list_template ="/admin/venta/listar";
+	private String edit_template ="admin/venta/editar";
+	private String add_template ="admin/venta/nuevo";
+	private String ver_template ="admin/venta/ver";
+    private String list_template ="admin/venta/listar";
     private String list_redirect ="redirect:/venta/listar";
 	    
 	@GetMapping("/add")

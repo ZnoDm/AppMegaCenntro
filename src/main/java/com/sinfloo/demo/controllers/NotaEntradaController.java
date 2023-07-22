@@ -52,10 +52,10 @@ public class NotaEntradaController {
 	@Autowired
     ProveedorService proveedorService;
 	
-	private String edit_template ="/admin/notaentrada/editar";
-	private String add_template ="/admin/notaentrada/nuevo";
-	private String ver_template ="/admin/notaentrada/ver";
-    private String list_template ="/admin/notaentrada/listar";
+	private String edit_template ="admin/notaentrada/editar";
+	private String add_template ="admin/notaentrada/nuevo";
+	private String ver_template ="admin/notaentrada/ver";
+    private String list_template ="admin/notaentrada/listar";
     private String list_redirect ="redirect:/notaentrada/listar";
 	    
 	@GetMapping("/add")

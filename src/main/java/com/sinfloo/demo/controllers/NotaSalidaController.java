@@ -58,10 +58,10 @@ public class NotaSalidaController {
 	@Autowired
     ClienteService clienteService;
 	
-	private String edit_template ="/admin/notasalida/editar";
-	private String add_template ="/admin/notasalida/nuevo";
-	private String ver_template ="/admin/notasalida/ver";
-    private String list_template ="/admin/notasalida/listar";
+	private String edit_template ="admin/notasalida/editar";
+	private String add_template ="admin/notasalida/nuevo";
+	private String ver_template ="admin/notasalida/ver";
+    private String list_template ="admin/notasalida/listar";
     private String list_redirect ="redirect:/notasalida/listar";
 	 
 

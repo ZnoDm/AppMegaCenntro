@@ -36,9 +36,9 @@ public class ProductoController {
 	@Autowired
 	CategoriaService categoriaService;
 	
-	private String edit_template ="/admin/producto/editar";
-	private String add_template ="/admin/producto/nuevo";
-    private String list_template ="/admin/producto/listar";
+	private String edit_template ="admin/producto/editar";
+	private String add_template ="admin/producto/nuevo";
+    private String list_template ="admin/producto/listar";
     private String list_redirect ="redirect:/producto/listar";
 	    
 	@GetMapping("/add")

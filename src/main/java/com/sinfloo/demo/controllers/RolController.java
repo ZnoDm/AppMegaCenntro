@@ -24,8 +24,8 @@ public class RolController {
     @Autowired
     RolService rolService;
     
-    private String edit_template ="/admin/rol/editar";
-	private String add_template ="/admin/rol/nuevo";
+    private String edit_template ="admin/rol/editar";
+	private String add_template ="admin/rol/nuevo";
     private String list_redirect ="redirect:/rol/listar";
 	    
 	@GetMapping("/add")
@@ -102,14 +102,14 @@ public class RolController {
         model.addAttribute("totalPaginas", (totalRoles + tamanoPagina - 1) / tamanoPagina);
 
         model.addAttribute("mensajeAlert",mensajeAlert);
-        return "/admin/rol/listar";
+        return "admin/rol/listar";
     }
     
     @GetMapping("/listadoAsignarPermisos")
     public String listadoAsignarPermisos(Model model) {
         List<Rol> roles = rolService.listarRoles();
         model.addAttribute("roles", roles);
-        return "/admin/rol/asignar";
+        return "admin/rol/asignar";
     }
 
 

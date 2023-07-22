@@ -34,9 +34,9 @@ public class ClienteController {
 	@Autowired
 	ClienteService clienteService;
 	
-	private String edit_template ="/admin/cliente/editar";
-	private String add_template ="/admin/cliente/nuevo";
-    private String list_template ="/admin/cliente/listar";
+	private String edit_template ="admin/cliente/editar";
+	private String add_template ="admin/cliente/nuevo";
+    private String list_template ="admin/cliente/listar";
     private String list_redirect ="redirect:/cliente/listar";
 	    
 	@GetMapping("/add")

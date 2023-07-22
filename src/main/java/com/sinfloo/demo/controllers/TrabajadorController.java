@@ -34,9 +34,9 @@ public class TrabajadorController {
 	@Autowired
 	UsuarioService usuarioService;
 	
-	private String edit_template ="/admin/trabajador/editar";
-	private String add_template ="/admin/trabajador/nuevo";
-    private String list_template ="/admin/trabajador/listar";
+	private String edit_template ="admin/trabajador/editar";
+	private String add_template ="admin/trabajador/nuevo";
+    private String list_template ="admin/trabajador/listar";
     private String list_redirect ="redirect:/trabajador/listar";
 	    
 	@GetMapping("/add")

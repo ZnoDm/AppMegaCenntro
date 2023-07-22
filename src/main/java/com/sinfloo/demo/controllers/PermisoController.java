@@ -28,8 +28,8 @@ public class PermisoController {
     PermisoService permisoService;
 	
     
-    private String edit_template ="/admin/permiso/editar";
-   	private String add_template ="/admin/permiso/nuevo";
+    private String edit_template ="admin/permiso/editar";
+   	private String add_template ="admin/permiso/nuevo";
    	private String list_redirect ="redirect:/permiso/listar";
        
     @GetMapping("/add")
@@ -107,7 +107,7 @@ public class PermisoController {
         model.addAttribute("paginaActual", pagina);
         model.addAttribute("totalPaginas", (totalPermisos + tamanoPagina - 1) / tamanoPagina);
         model.addAttribute("mensajeAlert",mensajeAlert);
-        return "/admin/permiso/listar";
+        return "admin/permiso/listar";
     }
 
     

@@ -48,8 +48,8 @@ public class UsuarioController {
     PasswordEncoder passwordEncoder;
     
         
-    private String edit_template ="/admin/usuario/editar";
-    private String add_template ="/admin/usuario/nuevo";
+    private String edit_template ="admin/usuario/editar";
+    private String add_template ="admin/usuario/nuevo";
     private String list_redirect ="redirect:/usuario/listar";
 
     @GetMapping("/add")
@@ -182,7 +182,7 @@ public class UsuarioController {
         model.addAttribute("totalPaginas", (totalUsuarios + tamanoPagina - 1) / tamanoPagina);
         model.addAttribute("mensajeAlert",mensajeAlert);
         model.addAttribute("mensajeError",mensajeError);
-        return "/admin/usuario/listar";
+        return "admin/usuario/listar";
     }
     
     @GetMapping("/registro")
@@ -194,17 +194,17 @@ public class UsuarioController {
     public ModelAndView registrar(String nombreUsuario, String password){
         ModelAndView mv = new ModelAndView();
         if(StringUtils.isBlank(nombreUsuario)){
-            mv.setViewName("/login/registro");
+            mv.setViewName("login/registro");
             mv.addObject("error", "el nombre no puede estar vacío");
             return mv;
         }
         if(StringUtils.isBlank(password)){
-            mv.setViewName("/login/registro");
+            mv.setViewName("login/registro");
             mv.addObject("error", "la contraseña no puede estar vacía");
             return mv;
         }
         if(usuarioService.existsByNombreUsuario(nombreUsuario)){
-            mv.setViewName("/login/registro");
+            mv.setViewName("login/registro");
             mv.addObject("error", "ese nombre de usuario ya existe");
             return mv;
         }
@@ -216,7 +216,7 @@ public class UsuarioController {
         roles.add(rolUser);
         usuario.setRoles(roles);
         usuarioService.save(usuario);
-        mv.setViewName("/login/login");
+        mv.setViewName("login/login");
         mv.addObject("registroOK", "Cuenta creada, " + usuario.getNombreUsuario() + ", ya puedes iniciar sesión");
         return mv;
     }

@@ -27,9 +27,9 @@ public class ProveedorController {
 	@Autowired
 	ProveedorService proveedorService;
 	
-	private String edit_template ="/admin/proveedor/editar";
-	private String add_template ="/admin/proveedor/nuevo";
-    private String list_template ="/admin/proveedor/listar";
+	private String edit_template ="admin/proveedor/editar";
+	private String add_template ="admin/proveedor/nuevo";
+    private String list_template ="admin/proveedor/listar";
     private String list_redirect ="redirect:/proveedor/listar";
 	    
 	@GetMapping("/add")
