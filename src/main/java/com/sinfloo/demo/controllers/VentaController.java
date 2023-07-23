@@ -203,11 +203,8 @@ public class VentaController {
         venta.setFechaModificacion(fechaActual);
         venta.setUsuarioModificacion(trabajadorService.get(venta.getTrabajador().getId()).getUsuario().getNombreUsuario());
 		ventaService.save(venta);
-        
-		 String mensajeAlert = "";
-	        mensajeAlert = "?mensajeAlert=Venta actualizada.";
-	        
-	        return list_redirect + mensajeAlert;
+
+		return list_redirect + "?mensajeAlert=Venta actualizada.";
     }
 
 
